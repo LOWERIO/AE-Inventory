@@ -42,7 +42,7 @@ async function fetchGitHubFile() {
 async function saveGitHubFile(data) {
     try {
         // Fetch file metadata for updates
-        const fetchResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${branch}`, {
+        const fetchResponse = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json?ref=main`, {
             headers: {
                 Authorization: `token ${token}`,
                 Accept: "application/vnd.github.v3+json",
@@ -52,11 +52,11 @@ async function saveGitHubFile(data) {
         let sha = null;
         if (fetchResponse.ok) {
             const fileData = await fetchResponse.json();
-            sha = fileData.sha;
+            sha = fileData.sha; // File exists, use its SHA for updates
         }
 
         // Save (or create) the file
-        const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+        const response = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json`, {
             method: "PUT",
             headers: {
                 Authorization: `token ${token}`,
@@ -65,7 +65,7 @@ async function saveGitHubFile(data) {
             body: JSON.stringify({
                 message: "Update checklist data",
                 content: btoa(JSON.stringify(data, null, 2)), // Convert JSON to base64
-                branch: branch,
+                branch: "main",
                 sha: sha, // Include SHA if updating
             }),
         });

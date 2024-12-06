@@ -16,7 +16,7 @@ let weeklyData = {};
 // GitHub API Helpers
 async function fetchGitHubFile() {
     try {
-        const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${branch}`, {
+        const response = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json?ref=main`, {
             headers: {
                 Authorization: `token ${token}`,
                 Accept: "application/vnd.github.v3+json",
@@ -28,14 +28,16 @@ async function fetchGitHubFile() {
             return JSON.parse(atob(fileData.content)); // Decode base64 content
         } else if (response.status === 404) {
             console.log("File not found. Initializing empty data.");
-            return {};
+            return {}; // Return empty data if file doesn't exist
         } else {
-            console.error("Error fetching file:", await response.json());
+            console.error(`Error fetching file. Status: ${response.status}`);
+            console.error(await response.json());
         }
     } catch (error) {
         console.error("Error connecting to GitHub:", error);
     }
 }
+
 
 async function saveGitHubFile(data) {
     try {

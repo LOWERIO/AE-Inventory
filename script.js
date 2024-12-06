@@ -1,7 +1,7 @@
-const repo = "lowerio/DOC"; // Replace with your GitHub repository
+const repo = "LOWERIO/DOC"; // Replace with your GitHub repository
 const branch = "main"; // Replace with your branch name
 const filePath = "data.json"; // Path to your JSON file in the repo
-const token = "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"; // Replace with your GitHub token
+const token = "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"; // Replace with your GitHub token
 
 const weeksContainer = document.getElementById("weeks-container");
 const checklistSection = document.getElementById("checklist-section");

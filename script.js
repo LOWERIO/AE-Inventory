@@ -13,6 +13,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
 const weeksContainer = document.getElementById("weeks-container");
 const checklistSection = document.getElementById("checklist-section");
 const checklistTableBody = document.getElementById("checklist-table-body");
@@ -21,7 +22,6 @@ const backToWeeksButton = document.getElementById("back-to-weeks");
 const addItemButton = document.getElementById("add-item");
 
 let currentWeek = "";
-let weeklyData = JSON.parse(localStorage.getItem("weeklyData")) || {};
 
 // Generate week tiles
 function generateWeeks(numWeeks = 52) {
@@ -39,14 +39,20 @@ function generateWeeks(numWeeks = 52) {
 function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
+
     checklistTableBody.innerHTML = ""; // Clear existing rows
     checklistSection.style.display = "block";
     weeksContainer.parentElement.style.display = "none";
 
-    const weekChecklist = weeklyData[week] || [];
-    weekChecklist.forEach(item => {
-        addRowToTable(item.componentName, item.status, item.notes);
-    });
+    const ref = database.ref('checklists/' + week);
+
+    ref.once('value')
+        .then(snapshot => {
+            const weekChecklist = snapshot.val() || [];
+            weekChecklist.forEach(item => {
+                addRowToTable(item.componentName, item.status, item.notes);
+            });
+        });
 }
 
 // Add a row to the checklist table
@@ -81,13 +87,9 @@ addItemButton.addEventListener("click", () => {
     }
 
     addRowToTable(componentName, status, notes);
-
-    // Clear form inputs
-    document.getElementById("component-name").value = "";
-    document.getElementById("notes").value = "";
 });
 
-// Save the current week's checklist to localStorage
+// Save the current week's checklist to Firebase
 function saveCurrentWeek() {
     const rows = checklistTableBody.querySelectorAll("tr");
     const data = Array.from(rows).map(row => {
@@ -99,8 +101,8 @@ function saveCurrentWeek() {
         };
     });
 
-    weeklyData[currentWeek] = data;
-    localStorage.setItem("weeklyData", JSON.stringify(weeklyData));
+    const ref = database.ref('checklists/' + currentWeek);
+    ref.set(data).catch(console.error);
 }
 
 // Back to weeks menu
@@ -110,5 +112,6 @@ backToWeeksButton.addEventListener("click", () => {
 });
 
 // Initialize weeks grid
-generateWeeks();
-
+document.addEventListener("DOMContentLoaded", () => {
+    generateWeeks();
+});

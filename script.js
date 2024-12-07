@@ -14,7 +14,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// DOM Elements
 const weeksContainer = document.getElementById("weeks-container");
 const checklistSection = document.getElementById("checklist-section");
 const checklistTableBody = document.getElementById("checklist-table-body");
@@ -33,32 +32,12 @@ function loadWeeklyData() {
             if (snapshot.exists()) {
                 weeklyData = snapshot.val();
                 generateWeeks();
-            } else {
-                console.log('No data available.');
             }
         })
-        .catch(error => console.error('Failed to load data:', error));
+        .catch(console.error);
 }
 
-// Save data to Firebase
-function saveCurrentWeek() {
-    const ref = database.ref('checklists/' + currentWeek);
-    const rows = checklistTableBody.querySelectorAll("tr");
-    const data = Array.from(rows).map(row => {
-        const cells = row.querySelectorAll("td");
-        return {
-            componentName: cells[0].textContent,
-            status: cells[1].textContent,
-            notes: cells[2].textContent,
-        };
-    });
-
-    ref.set(data)
-        .then(() => console.log('Data saved successfully'))
-        .catch(error => console.error('Failed to save data:', error));
-}
-
-// Generate week tiles dynamically
+// Generate weeks dynamically
 function generateWeeks(numWeeks = 52) {
     weeksContainer.innerHTML = "";
     for (let i = 1; i <= numWeeks; i++) {
@@ -71,7 +50,7 @@ function generateWeeks(numWeeks = 52) {
     }
 }
 
-// Load or create a checklist for a given week
+// Load or create a week's checklist
 function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
@@ -85,7 +64,7 @@ function loadOrCreateWeek(week) {
     });
 }
 
-// Add a row to the checklist table
+// Add a row to the checklist
 function addRowToTable(componentName, status, notes) {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -95,58 +74,36 @@ function addRowToTable(componentName, status, notes) {
         <td><button onclick="removeRow(this)">Remove</button></td>
     `;
     checklistTableBody.appendChild(row);
-    saveCurrentWeek();  // Automatically save after adding a row
+    saveCurrentWeek();
 }
 
 // Remove a row from the checklist table
 function removeRow(button) {
-    const row = button.parentElement.parentElement;
-    row.remove();
-    saveCurrentWeek();  // Automatically save after removing a row
+    button.parentElement.parentElement.remove();
+    saveCurrentWeek();
 }
 
-// Add a new item to the checklist
-addItemButton.addEventListener("click", () => {
-    const componentName = document.getElementById("component-name").value.trim();
-    const status = document.getElementById("component-status").value;
-    const notes = document.getElementById("notes").value.trim();
-
-    if (!componentName) {
-        alert("Please provide a component name.");
-        return;
-    }
-
-    addRowToTable(componentName, status, notes);
-
-    // Clear form inputs
-    document.getElementById("component-name").value = "";
-    document.getElementById("notes").value = "";
-});
-
-// Back to weeks menu
-backToWeeksButton.addEventListener("click", () => {
-    checklistSection.style.display = "none";
-    weeksContainer.parentElement.style.display = "block";
-});
-
-// Save the current checklist to Firebase every change
+// Save the current checklist to Firebase
 function saveCurrentWeek() {
     const ref = database.ref('checklists/' + currentWeek);
     const rows = checklistTableBody.querySelectorAll("tr");
-
     const data = Array.from(rows).map(row => ({
         componentName: row.cells[0].textContent,
         status: row.cells[1].textContent,
         notes: row.cells[2].textContent,
     }));
 
-    ref.set(data)
-        .then(() => console.log('Data saved successfully'))
-        .catch(error => console.error('Failed to save data:', error));
+    ref.set(data).catch(console.error);
 }
 
-// Initialize everything
+// Back to the weeks menu
+backToWeeksButton.addEventListener("click", () => {
+    checklistSection.style.display = "none";
+    weeksContainer.parentElement.style.display = "block";
+});
+
+// Start everything
 document.addEventListener("DOMContentLoaded", () => {
-    loadWeeklyData();  // Load data on startup
+    loadWeeklyData();
     generateWeeks();
 });

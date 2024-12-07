@@ -13,47 +13,49 @@
 </head>
 
 <body>
+    <header>
+        <h1>IT Doctor Checklist</h1>
+        <p>Inspect and log the status of IT components.</p>
+    </header>
+    <main>
+        <form id="checklist-form">
+            <div class="input-group">
+                <label for="component-name">Component Name:</label>
+                <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
+            </div>
+            <div class="input-group">
+                <label for="component-status">Status:</label>
+                <select id="component-status" required>
+                    <option value="OK">OK</option>
+                    <option value="Has a Problem">Has a Problem</option>
+                    <option value="Not OK">Not OK</option>
+                    <option value="Not Working">Not Working</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="notes">Notes:</label>
+                <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
+            </div>
+            <button type="submit">Add to Checklist</button>
+        </form>
 
-    <h1>Weekly IT Component Checklist</h1>
-
-    <!-- Weeks Container -->
-    <div id="weeks-container" class="weeks-container"></div>
-
-    <!-- Checklist Section -->
-    <div id="checklist-section">
-        <h2 id="selected-week-title">Checklist</h2>
-
-        <!-- Form to add new components -->
-        <div class="form-container">
-            <input id="component-name" type="text" placeholder="Component Name">
-            <select id="component-status">
-                <option value="OK">OK</option>
-                <option value="Has a problem">Has a problem</option>
-                <option value="Not OK">Not OK</option>
-                <option value="Not working">Not working</option>
-            </select>
-            <input id="notes" type="text" placeholder="Notes">
-            <button id="add-item">Add Item</button>
-        </div>
-
-        <!-- Checklist Table -->
-        <table class="checklist-table">
-            <thead>
-                <tr>
-                    <th>Component Name</th>
-                    <th>Status</th>
-                    <th>Notes</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="checklist-table-body"></tbody>
-        </table>
-
-        <!-- Back to Weeks Button -->
-        <button id="back-to-weeks" class="back-btn">Back to Weeks Menu</button>
-    </div>
-
-    <!-- Your script -->
+        <section id="checklist">
+            <h2>Checklist</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Status</th>
+                        <th>Notes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="checklist-table-body">
+                    <!-- Items will be added here -->
+                </tbody>
+            </table>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

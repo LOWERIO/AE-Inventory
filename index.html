@@ -3,20 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Checklist</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
+    <title>Weekly IT Checklist</title>
+
+    <!-- Firebase SDK (compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div id="weeks-menu">
-        <h1>Weeks</h1>
-        <div id="weeks-container"></div>
-    </div>
 
-    <div id="checklist-section" style="display: none;">
-        <h1 id="selected-week-title"></h1>
-        <button id="back-to-weeks">Back to Weeks</button>
+    <h1>Weekly IT Component Checklist</h1>
+
+    <!-- Weeks Container -->
+    <div id="weeks-container"></div>
+
+    <!-- Checklist Section -->
+    <div id="checklist-section">
+        <h2 id="selected-week-title">Checklist</h2>
+
+        <!-- Form to add new components -->
+        <div>
+            <input id="component-name" type="text" placeholder="Component Name">
+            <select id="component-status">
+                <option value="OK">OK</option>
+                <option value="Has a problem">Has a problem</option>
+                <option value="Not OK">Not OK</option>
+                <option value="Not working">Not working</option>
+            </select>
+            <input id="notes" type="text" placeholder="Notes">
+            <button id="add-item">Add Item</button>
+        </div>
+
+        <!-- Checklist Table -->
         <table>
             <thead>
                 <tr>
@@ -28,17 +46,12 @@
             </thead>
             <tbody id="checklist-table-body"></tbody>
         </table>
-        <h2>Add Item</h2>
-        <input type="text" id="component-name" placeholder="Component Name" required>
-        <select id="component-status">
-            <option value="OK">OK</option>
-            <option value="Has a Problem">Has a Problem</option>
-            <option value="Not OK">Not OK</option>
-            <option value="Not Working">Not Working</option>
-        </select>
-        <input type="text" id="notes" placeholder="Notes">
-        <button id="add-item">Add Item</button>
+
+        <!-- Back to weeks button -->
+        <button id="back-to-weeks" class="back-btn">Back to Weeks Menu</button>
     </div>
+
+    <!-- Your script -->
     <script src="script.js"></script>
 </body>
 </html>

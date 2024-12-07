@@ -3,63 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Doctor Weekly Checklist</title>
+    <title>Weekly Checklist</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
 </head>
 <body>
-    <header>
-        <h1>IT Doctor Weekly Checklist</h1>
-        <p>Select a week to manage your IT inspection checklist.</p>
-    </header>
-    <main>
-        <section id="week-grid">
-            <h2>Weeks</h2>
-            <div id="weeks-container">
-                <!-- Week tiles will be dynamically generated -->
-            </div>
-        </section>
+    <div id="weeks-menu">
+        <h1>Weeks</h1>
+        <div id="weeks-container"></div>
+    </div>
 
-        <section id="checklist-section" style="display: none;">
-            <h2 id="selected-week-title">Checklist</h2>
-            <form id="checklist-form">
-                <div class="input-group">
-                    <label for="component-name">Component Name:</label>
-                    <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
-                </div>
-                <div class="input-group">
-                    <label for="component-status">Status:</label>
-                    <select id="component-status" required>
-                        <option value="OK">OK</option>
-                        <option value="Has a Problem">Has a Problem</option>
-                        <option value="Not OK">Not OK</option>
-                        <option value="Not Working">Not Working</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="notes">Notes:</label>
-                    <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
-                </div>
-                <button type="button" id="add-item">Add to Checklist</button>
-            </form>
-        
-            <table>
-                <thead>
-                    <tr>
-                        <th>Component</th>
-                        <th>Status</th>
-                        <th>Notes</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="checklist-table-body">
-                    <!-- Checklist rows will be dynamically added -->
-                </tbody>
-            </table>
-        
-            <button id="back-to-weeks">Back to Weeks</button>
-        </section>
-        
-    </main>
+    <div id="checklist-section" style="display: none;">
+        <h1 id="selected-week-title"></h1>
+        <button id="back-to-weeks">Back to Weeks</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component Name</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="checklist-table-body"></tbody>
+        </table>
+        <h2>Add Item</h2>
+        <input type="text" id="component-name" placeholder="Component Name" required>
+        <select id="component-status">
+            <option value="OK">OK</option>
+            <option value="Has a Problem">Has a Problem</option>
+            <option value="Not OK">Not OK</option>
+            <option value="Not Working">Not Working</option>
+        </select>
+        <input type="text" id="notes" placeholder="Notes">
+        <button id="add-item">Add Item</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

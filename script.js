@@ -1,8 +1,19 @@
-const repo = "LOWERIO/DOC"; // Replace with your GitHub repository
-const branch = "main"; // Replace with your branch name
-const filePath = "data.json"; // Path to your JSON file in the repo
-const token = "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"; // Replace with your GitHub token
+// Firebase configuration (replace with your actual configuration)
+const firebaseConfig = {
+    apiKey: "AIzaSyDNoPJvYYTEXv3jZxGHQUcbwv82J5C5Tno",
+    authDomain: "datacheck-11e08.firebaseapp.com",
+    databaseURL: "https://datacheck-11e08-default-rtdb.firebaseio.com",
+    projectId: "datacheck-11e08",
+    storageBucket: "datacheck-11e08.firebasestorage.app",
+    messagingSenderId: "385327087776",
+    appId: "1:385327087776:web:291a453c0157205d7809c5",
+};
 
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.getDatabase(app);
+
+// DOM Elements
 const weeksContainer = document.getElementById("weeks-container");
 const checklistSection = document.getElementById("checklist-section");
 const checklistTableBody = document.getElementById("checklist-table-body");
@@ -10,75 +21,8 @@ const selectedWeekTitle = document.getElementById("selected-week-title");
 const backToWeeksButton = document.getElementById("back-to-weeks");
 const addItemButton = document.getElementById("add-item");
 
+// Global Variables
 let currentWeek = "";
-let weeklyData = {};
-
-// GitHub API Helpers
-async function fetchGitHubFile() {
-    try {
-        const response = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json?ref=main`, {
-            headers: {
-                Authorization: `token ${token}`,
-                Accept: "application/vnd.github.v3+json",
-            },
-        });
-
-        if (response.ok) {
-            const fileData = await response.json();
-            return JSON.parse(atob(fileData.content)); // Decode base64 content
-        } else if (response.status === 404) {
-            console.log("File not found. Initializing empty data.");
-            return {}; // Return empty data if file doesn't exist
-        } else {
-            console.error(`Error fetching file. Status: ${response.status}`);
-            console.error(await response.json());
-        }
-    } catch (error) {
-        console.error("Error connecting to GitHub:", error);
-    }
-}
-
-
-async function saveGitHubFile(data) {
-    try {
-        // Fetch file metadata for updates
-        const fetchResponse = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json?ref=main`, {
-            headers: {
-                Authorization: `token ${token}`,
-                Accept: "application/vnd.github.v3+json",
-            },
-        });
-
-        let sha = null;
-        if (fetchResponse.ok) {
-            const fileData = await fetchResponse.json();
-            sha = fileData.sha; // File exists, use its SHA for updates
-        }
-
-        // Save (or create) the file
-        const response = await fetch(`https://api.github.com/repos/LOWERIO/DOC/contents/data.json`, {
-            method: "PUT",
-            headers: {
-                Authorization: `token ${token}`,
-                Accept: "application/vnd.github.v3+json",
-            },
-            body: JSON.stringify({
-                message: "Update checklist data",
-                content: btoa(JSON.stringify(data, null, 2)), // Convert JSON to base64
-                branch: "main",
-                sha: sha, // Include SHA if updating
-            }),
-        });
-
-        if (response.ok) {
-            console.log("Data saved successfully!");
-        } else {
-            console.error("Error saving file:", await response.json());
-        }
-    } catch (error) {
-        console.error("Error saving data to GitHub:", error);
-    }
-}
 
 // Generate week tiles
 function generateWeeks(numWeeks = 52) {
@@ -93,17 +37,15 @@ function generateWeeks(numWeeks = 52) {
 }
 
 // Load or create a week's checklist
-function loadOrCreateWeek(week) {
+async function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
     checklistTableBody.innerHTML = ""; // Clear existing rows
     checklistSection.style.display = "block";
     weeksContainer.parentElement.style.display = "none";
 
-    const weekChecklist = weeklyData[week] || [];
-    weekChecklist.forEach(item => {
-        addRowToTable(item.componentName, item.status, item.notes);
-    });
+    const weekChecklist = await loadChecklistFromFirebase(week);
+    weekChecklist.forEach(item => addRowToTable(item.componentName, item.status, item.notes));
 }
 
 // Add a row to the checklist table
@@ -144,8 +86,8 @@ addItemButton.addEventListener("click", () => {
     document.getElementById("notes").value = "";
 });
 
-// Save the current week's checklist to GitHub
-function saveCurrentWeek() {
+// Save the current week's checklist to Firebase
+async function saveCurrentWeek() {
     const rows = checklistTableBody.querySelectorAll("tr");
     const data = Array.from(rows).map(row => {
         const cells = row.querySelectorAll("td");
@@ -156,8 +98,27 @@ function saveCurrentWeek() {
         };
     });
 
-    weeklyData[currentWeek] = data;
-    saveGitHubFile(weeklyData);
+    try {
+        await firebase.set(firebase.ref(database, `checklists/${currentWeek}`), data);
+        console.log(`Week ${currentWeek} data saved successfully.`);
+    } catch (error) {
+        console.error("Error saving checklist data:", error);
+    }
+}
+
+// Load checklist data from Firebase
+async function loadChecklistFromFirebase(week) {
+    try {
+        const snapshot = await firebase.get(firebase.ref(database, `checklists/${week}`));
+        if (snapshot.exists()) {
+            return snapshot.val();
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error("Error loading checklist data:", error);
+        return [];
+    }
 }
 
 // Back to weeks menu
@@ -166,8 +127,5 @@ backToWeeksButton.addEventListener("click", () => {
     weeksContainer.parentElement.style.display = "block";
 });
 
-// Initialize weeks grid and fetch data
-(async function initialize() {
-    weeklyData = await fetchGitHubFile();
-    generateWeeks();
-})();
+// Initialize weeks grid
+generateWeeks();

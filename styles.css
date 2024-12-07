@@ -1,6 +1,6 @@
 /* styles.css */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", monospace;
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
@@ -41,45 +41,70 @@ h1, h2 {
     padding: 1em;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color, scale 0.2s;
 }
 
 .week-tile:hover {
     background-color: #005fa3;
+    scale: .9;
 }
 
 input, select, textarea, button {
-    width: 100%;
     padding: 0.8em;
     margin: 0.5em 0;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
+select{
+    width: 100%
+}
+
+input, textarea{
+    width: 97%;
+}
+
 button {
+    width: 100%;
     background-color: #007acc;
     color: white;
     border: none;
     cursor: pointer;
     font-weight: bold;
+    transition: all 0.2s;
 }
 
 button:hover {
     background-color: #005fa3;
+    scale: .95;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1em;
+    transition: all 0.2s;
 }
 
 th, td {
     padding: 0.8em;
-    text-align: left;
+    text-align: center;
     border: 1px solid #ccc;
 }
-
 th {
     background-color: #f9f9f9;
+}
+
+.OK{
+    background-color: rgb(13, 194, 13);
+    color: white;
+    font-weight: bold;
+}
+
+.Problem{
+    background-color: rgb(255,255,0);
+}
+
+.NotWorking{
+    background-color: rgba(255,0,0);
 }

@@ -60,7 +60,7 @@ function addRowToTable(componentName, status, notes) {
     const row = document.createElement("tr");
     row.innerHTML = `
         <td>${componentName}</td>
-        <td>${status}</td>
+        <td class="${status}"><div class="${status}"></div>${status}</td>
         <td>${notes}</td>
         <td><button onclick="removeRow(this)">Remove</button></td>
     `;

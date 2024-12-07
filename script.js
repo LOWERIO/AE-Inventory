@@ -26,6 +26,37 @@ let currentWeek = "";
 // Prefix hierarchy for sorting
 const prefixHierarchy = ["AD", "CC", "WR"];
 
+
+const filterStatus = document.getElementById("filter-status");
+const filterPrefix = document.getElementById("filter-prefix");
+
+// Apply filters when dropdowns change
+filterStatus.addEventListener("change", applyFilters);
+filterPrefix.addEventListener("change", applyFilters);
+
+function applyFilters() {
+    const selectedStatus = filterStatus.value;
+    const selectedPrefix = filterPrefix.value;
+
+    const rows = checklistTableBody.querySelectorAll("tr");
+
+    rows.forEach(row => {
+        const componentName = row.cells[0].textContent.trim();
+        const status = row.cells[1].textContent.trim();
+
+        // Extract prefix from component name
+        const [prefix] = parseStation(componentName);
+
+        // Check if the row matches the filters
+        const matchesStatus = selectedStatus === "all" || status === selectedStatus;
+        const matchesPrefix = selectedPrefix === "all" || prefix === selectedPrefix;
+
+        // Show or hide the row based on filters
+        row.style.display = matchesStatus && matchesPrefix ? "" : "none";
+    });
+}
+
+
 // Generate week tiles
 function generateWeeks(numWeeks = 52) {
     for (let i = 1; i <= numWeeks; i++) {
@@ -112,6 +143,9 @@ function editRow(button) {
 
     // Close modal on cancel
     document.getElementById("cancel-edit").onclick = () => {
+        modal.style.display = "none";
+    };
+    document.getElementById("close-modal").onclick = () => {
         modal.style.display = "none";
     };
 }

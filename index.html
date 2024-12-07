@@ -48,7 +48,24 @@
         </div>
         <button type="button" id="add-item">Add to Checklist</button>
     </form>
-
+    <div id="filters">
+        <label for="filter-prefix">Prefix:</label>
+        <select id="filter-prefix">
+            <option value="all">All</option>
+            <option value="AD">AD</option>
+            <option value="CC">CC</option>
+            <option value="WR">WR</option>
+        </select>
+        <label for="filter-status">Status:</label>
+        <select id="filter-status">
+            <option value="all">All</option>
+            <option value="OK">OK</option>
+            <option value="Problem">Problem</option>
+            <option value="Repair">Repair</option>
+            <option value="Missing">Missing</option>
+        </select>
+    </div>
+    
     <table>
         <thead>
             <tr>

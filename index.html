@@ -15,14 +15,14 @@
     <h1>Weekly IT Component Checklist</h1>
 
     <!-- Weeks Container -->
-    <div id="weeks-container"></div>
+    <div id="weeks-container" class="weeks-container"></div>
 
     <!-- Checklist Section -->
     <div id="checklist-section">
         <h2 id="selected-week-title">Checklist</h2>
 
         <!-- Form to add new components -->
-        <div>
+        <div class="form-container">
             <input id="component-name" type="text" placeholder="Component Name">
             <select id="component-status">
                 <option value="OK">OK</option>
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Checklist Table -->
-        <table>
+        <table class="checklist-table">
             <thead>
                 <tr>
                     <th>Component Name</th>
@@ -47,7 +47,7 @@
             <tbody id="checklist-table-body"></tbody>
         </table>
 
-        <!-- Back to weeks button -->
+        <!-- Back to Weeks Button -->
         <button id="back-to-weeks" class="back-btn">Back to Weeks Menu</button>
     </div>
 

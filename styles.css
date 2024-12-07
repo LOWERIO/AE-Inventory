@@ -1,94 +1,85 @@
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #f4f4f9;
-    padding: 20px;
+    color: #333;
 }
 
-h1 {
+header {
     text-align: center;
-    color: #00796B;
+    background-color: #007acc;
+    color: white;
+    padding: 1em 0;
+}
+
+main {
+    margin: 2em auto;
+    max-width: 800px;
+    padding: 1em;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+#weeks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1em;
 }
 
 .week-tile {
-    display: inline-block;
-    padding: 20px;
-    margin: 10px;
-    background-color: #e0f7fa;
-    border-radius: 8px;
+    background-color: #007acc;
+    color: white;
     text-align: center;
+    padding: 1em;
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
 .week-tile:hover {
-    transform: scale(1.05);
-    background-color: #b2ebf2;
+    background-color: #005fa3;
 }
 
-.week-tile:active {
-    background-color: #00BCD4;
-}
-
-#checklist-section {
-    display: none;
-    padding: 15px;
-}
-
-.form-container {
-    margin: 10px 0;
-}
-
-input[type="text"], select, button {
-    padding: 10px;
-    margin: 5px;
+input, select, textarea, button {
+    width: 100%;
+    padding: 0.8em;
+    margin: 0.5em 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-input[type="text"]:focus, select:focus, button:focus {
-    outline: none;
+    border-radius: 4px;
 }
 
 button {
-    background-color: #00796B;
+    background-color: #007acc;
     color: white;
+    border: none;
+    cursor: pointer;
     font-weight: bold;
 }
 
 button:hover {
-    background-color: #004D40;
+    background-color: #005fa3;
 }
 
-.checklist-table {
+table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 1em;
 }
 
-.checklist-table th, .checklist-table td {
-    padding: 10px;
-    text-align: center;
+th, td {
+    padding: 0.8em;
+    text-align: left;
+    border: 1px solid #ccc;
 }
 
-.checklist-table th {
-    background-color: #E0F2F7;
-}
-
-.checklist-table tr:nth-child(even) {
-    background-color: #F1F8FF;
-}
-
-.checklist-table tr:hover {
-    background-color: #e0f7fa;
-}
-
-.back-btn {
-    background-color: #FFEB3D;
-    font-weight: bold;
-}
-
-.back-btn:hover {
-    background-color: #FFC107;
+th {
+    background-color: #f9f9f9;
 }

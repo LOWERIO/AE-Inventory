@@ -23,6 +23,9 @@ const addItemButton = document.getElementById("add-item");
 
 let currentWeek = "";
 
+// Prefix hierarchy for sorting
+const prefixHierarchy = ["AD", "CC", "WR"];
+
 // Generate week tiles
 function generateWeeks(numWeeks = 52) {
     for (let i = 1; i <= numWeeks; i++) {
@@ -59,19 +62,58 @@ function loadOrCreateWeek(week) {
 function addRowToTable(componentName, status, notes) {
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td contenteditable="false">${componentName}</td>
-        <td contenteditable="false" class="${status}">
-            <div class="${status}"></div>${status}
-        </td>
-        <td contenteditable="false">${notes}</td>
+        <td>${componentName}</td>
+        <td class="${status}"><div class="${status}"></div>${status}</td>
+        <td>${notes}</td>
         <td>
-            <button class="edit-item" onclick="editRow(this)">Edit</button>
-            <button class="save-item" style="display:none;" onclick="saveRow(this)">Save</button>
-            <button class="remove-item" onclick="removeRow(this)">Remove</button>
+            <button class="edit_item" onclick="editRow(this)">Edit</button>
+            <button class="remove_item" onclick="removeRow(this)">Remove</button>
         </td>
     `;
     checklistTableBody.appendChild(row);
+
+    sortTable(); // Sort rows after adding
     saveCurrentWeek(); // Automatically save after adding a row
+}
+
+// Edit a row in the checklist table
+function editRow(button) {
+    const row = button.parentElement.parentElement;
+    const componentNameCell = row.children[0];
+    const statusCell = row.children[1];
+    const notesCell = row.children[2];
+
+    // Populate modal fields with current row data
+    document.getElementById("edit-component-name").value = componentNameCell.textContent;
+    document.getElementById("edit-component-status").value = statusCell.textContent;
+    document.getElementById("edit-notes").value = notesCell.textContent;
+
+    // Show the modal
+    const modal = document.getElementById("edit-modal");
+    modal.style.display = "block";
+
+    // Add save changes functionality
+    document.getElementById("save-changes").onclick = () => {
+        const newComponentName = document.getElementById("edit-component-name").value.trim();
+        const newStatus = document.getElementById("edit-component-status").value.trim();
+        const newNotes = document.getElementById("edit-notes").value.trim();
+
+        if (newComponentName) componentNameCell.textContent = newComponentName;
+        if (newStatus) {
+            statusCell.textContent = newStatus;
+            statusCell.className = newStatus;
+        }
+        if (newNotes) notesCell.textContent = newNotes;
+
+        sortTable(); // Re-sort after editing
+        saveCurrentWeek(); // Save changes
+        modal.style.display = "none"; // Close modal
+    };
+
+    // Close modal on cancel
+    document.getElementById("cancel-edit").onclick = () => {
+        modal.style.display = "none";
+    };
 }
 
 // Remove a row from the checklist table
@@ -79,34 +121,6 @@ function removeRow(button) {
     const row = button.parentElement.parentElement;
     row.remove();
     saveCurrentWeek(); // Automatically save after removing a row
-}
-
-// Edit a row in the checklist table
-function editRow(button) {
-    const row = button.parentElement.parentElement;
-    const cells = row.querySelectorAll("td");
-
-    cells.forEach(cell => {
-        cell.contentEditable = "true";
-    });
-
-    button.style.display = "none"; // Hide the "Edit" button
-    row.querySelector(".save-item").style.display = "inline"; // Show the "Save" button
-}
-
-// Save an edited row in the checklist table
-function saveRow(button) {
-    const row = button.parentElement.parentElement;
-    const cells = row.querySelectorAll("td");
-
-    cells.forEach(cell => {
-        cell.contentEditable = "false";
-    });
-
-    button.style.display = "none"; // Hide the "Save" button
-    row.querySelector(".edit-item").style.display = "inline"; // Show the "Edit" button
-
-    saveCurrentWeek(); // Save the updated data to Firebase
 }
 
 // Add a new item to the checklist
@@ -121,7 +135,7 @@ addItemButton.addEventListener("click", () => {
 
     addRowToTable(componentName, status, notes);
 
-    // Clear form inputs
+    // Clear input fields
     document.getElementById("component-name").value = "";
     document.getElementById("notes").value = "";
 });
@@ -133,13 +147,50 @@ function saveCurrentWeek() {
         const cells = row.querySelectorAll("td");
         return {
             componentName: cells[0].textContent,
-            status: cells[1].textContent.trim(),
+            status: cells[1].textContent,
             notes: cells[2].textContent,
         };
     });
 
     const ref = database.ref('checklists/' + currentWeek);
     ref.set(data).catch(console.error);
+}
+
+// Function to sort the table rows
+function sortTable() {
+    const rows = Array.from(checklistTableBody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+        const nameA = a.cells[0].textContent.trim();
+        const nameB = b.cells[0].textContent.trim();
+
+        // Extract prefix and station number
+        const [prefixA, numberA] = parseStation(nameA);
+        const [prefixB, numberB] = parseStation(nameB);
+
+        // Compare by prefix hierarchy
+        const prefixOrderA = prefixHierarchy.indexOf(prefixA);
+        const prefixOrderB = prefixHierarchy.indexOf(prefixB);
+
+        if (prefixOrderA !== prefixOrderB) {
+            return prefixOrderA - prefixOrderB; // Sort by prefix
+        }
+
+        // If prefixes are the same, sort numerically by station number
+        return numberA - numberB;
+    });
+
+    // Re-add sorted rows to the table
+    rows.forEach(row => checklistTableBody.appendChild(row));
+}
+
+// Parse station name into prefix and number
+function parseStation(name) {
+    const match = name.match(/^([A-Z]+)\s+station\s+(\d+)$/i);
+    if (match) {
+        return [match[1].toUpperCase(), parseInt(match[2], 10)];
+    }
+    return ["", 0]; // Default values for unrecognized format
 }
 
 // Back to weeks menu

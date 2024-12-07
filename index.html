@@ -37,8 +37,9 @@
             <label for="component-status">Status:</label>
             <select id="component-status" required>
                 <option value="OK">OK</option>
-                <option value="Minor Problem">Has a Problem</option>
+                <option value="Problem">Has a Problem</option>
                 <option value="Repair">Needs Repair</option>
+                <option value="Missing">Missing</option>
             </select>
         </div>
         <div class="input-group">
@@ -61,7 +62,31 @@
             <!-- Checklist rows will be dynamically added -->
         </tbody>
     </table>
+    <!-- Edit Modal -->
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <h2>Edit Checklist Item</h2>
+        <label for="edit-component-name">Component Name:</label>
+        <input type="text" id="edit-component-name" />
 
+        <label for="edit-component-status">Status:</label>
+        <select type="text" id="edit-component-status">
+            <option value="OK">OK</option>
+            <option value="Problem">Has a Problem</option>
+            <option value="Repair">Needs Repair</option>
+            <option value="Missing">Missing</option>
+        </select>
+
+        <label for="edit-notes">Notes:</label>
+        <textarea id="edit-notes"></textarea>
+
+        <div class="modal-actions">
+            <button id="save-changes">Save Changes</button>
+            <button id="cancel-edit">Cancel</button>
+        </div>
+    </div>
+</div>
     <button id="back-to-weeks">Back to Weeks</button>
 </section>
     </main>

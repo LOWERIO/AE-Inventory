@@ -62,7 +62,7 @@ function addRowToTable(componentName, status, notes) {
         <td>${componentName}</td>
         <td class="${status}"><div class="${status}"></div>${status}</td>
         <td>${notes}</td>
-        <td><button onclick="removeRow(this)">Remove</button></td>
+        <td><button class="remove_item" onclick="removeRow(this)">Remove</button></td>
     `;
     checklistTableBody.appendChild(row);
     saveCurrentWeek(); // Automatically save after adding a row
@@ -80,7 +80,7 @@ addItemButton.addEventListener("click", () => {
     const componentName = document.getElementById("component-name").value.trim();
     const status = document.getElementById("component-status").value;
     const notes = document.getElementById("notes").value.trim();
-
+    console.log(document.querySelector(document.getElementById("component-status").value))
     if (!componentName) {
         alert("Please provide a component name.");
         return;

@@ -24,22 +24,8 @@ const addItemButton = document.getElementById("add-item");
 let currentWeek = "";
 let weeklyData = {};
 
-// Load data from Firebase
-function loadWeeklyData() {
-    const ref = database.ref('checklists');
-    ref.once('value')
-        .then(snapshot => {
-            if (snapshot.exists()) {
-                weeklyData = snapshot.val();
-                generateWeeks();
-            }
-        })
-        .catch(console.error);
-}
-
 // Generate weeks dynamically
 function generateWeeks(numWeeks = 52) {
-    weeksContainer.innerHTML = "";
     for (let i = 1; i <= numWeeks; i++) {
         const weekTile = document.createElement("div");
         weekTile.className = "week-tile";
@@ -54,17 +40,36 @@ function generateWeeks(numWeeks = 52) {
 function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
+
     checklistTableBody.innerHTML = "";
     checklistSection.style.display = "block";
     weeksContainer.parentElement.style.display = "none";
 
-    const weekChecklist = weeklyData[week] || [];
-    weekChecklist.forEach(item => {
-        addRowToTable(item.componentName, item.status, item.notes);
-    });
+    const ref = database.ref('checklists/' + week);
+
+    ref.once('value')
+        .then(snapshot => {
+            const weekChecklist = snapshot.val() || [];
+            weekChecklist.forEach(item => {
+                addRowToTable(item.componentName, item.status, item.notes);
+            });
+        });
 }
 
-// Add a row to the checklist
+// Save current week's checklist to Firebase
+function saveCurrentWeek() {
+    const ref = database.ref('checklists/' + currentWeek);
+    const rows = checklistTableBody.querySelectorAll("tr");
+    const data = Array.from(rows).map(row => ({
+        componentName: row.cells[0].textContent,
+        status: row.cells[1].textContent,
+        notes: row.cells[2].textContent,
+    }));
+
+    ref.set(data).catch(console.error);
+}
+
+// Add a row to the checklist table
 function addRowToTable(componentName, status, notes) {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -83,20 +88,7 @@ function removeRow(button) {
     saveCurrentWeek();
 }
 
-// Save the current checklist to Firebase
-function saveCurrentWeek() {
-    const ref = database.ref('checklists/' + currentWeek);
-    const rows = checklistTableBody.querySelectorAll("tr");
-    const data = Array.from(rows).map(row => ({
-        componentName: row.cells[0].textContent,
-        status: row.cells[1].textContent,
-        notes: row.cells[2].textContent,
-    }));
-
-    ref.set(data).catch(console.error);
-}
-
-// Back to the weeks menu
+// Back to weeks menu
 backToWeeksButton.addEventListener("click", () => {
     checklistSection.style.display = "none";
     weeksContainer.parentElement.style.display = "block";
@@ -104,6 +96,5 @@ backToWeeksButton.addEventListener("click", () => {
 
 // Start everything
 document.addEventListener("DOMContentLoaded", () => {
-    loadWeeklyData();
     generateWeeks();
 });

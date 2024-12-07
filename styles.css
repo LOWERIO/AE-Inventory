@@ -1,79 +1,94 @@
 body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #00796B;
-        }
-        .week-tile {
-            display: inline-block;
-            padding: 20px;
-            margin: 10px;
-            background-color: #e0f7fa;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.3s;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-        .week-tile:hover {
-            transform: scale(1.05);
-            background-color: #b2ebf2;
-        }
-        .week-tile:active {
-            background-color: #00BCD4;
-        }
-        .week-tile.selected {
-            background-color: #80deea;
-        }
-        #checklist-section {
-            display: none;
-            padding: 15px;
-        }
-        .form-container {
-            margin: 10px 0;
-        }
-        input[type="text"], select, button {
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="text"]:focus, select:focus, button:focus {
-            outline: none;
-        }
-        button {
-            background-color: #00796B;
-            color: white;
-            font-weight: bold;
-        }
-        button:hover {
-            background-color: #004D40;
-        }
-        .checklist-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .checklist-table th, .checklist-table td {
-            padding: 10px;
-            text-align: center;
-        }
-        .checklist-table th {
-            background-color: #E0F2F7;
-        }
-        .checklist-table tr:nth-child(even) {
-            background-color: #F1F8FF;
-        }
-        .checklist-table tr:hover {
-            background-color: #e0f7fa;
-        }
-        .back-btn {
-            margin-top: 10px;
-            background-color: #FFEB3D;
-        }
-        .back-btn:hover {
-            background-color: #FFC107;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #00796B;
+}
+
+.week-tile {
+    display: inline-block;
+    padding: 20px;
+    margin: 10px;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    font-weight: bold;
+}
+
+.week-tile:hover {
+    transform: scale(1.05);
+    background-color: #b2ebf2;
+}
+
+.week-tile:active {
+    background-color: #00BCD4;
+}
+
+#checklist-section {
+    display: none;
+    padding: 15px;
+}
+
+.form-container {
+    margin: 10px 0;
+}
+
+input[type="text"], select, button {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, select:focus, button:focus {
+    outline: none;
+}
+
+button {
+    background-color: #00796B;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #004D40;
+}
+
+.checklist-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.checklist-table th, .checklist-table td {
+    padding: 10px;
+    text-align: center;
+}
+
+.checklist-table th {
+    background-color: #E0F2F7;
+}
+
+.checklist-table tr:nth-child(even) {
+    background-color: #F1F8FF;
+}
+
+.checklist-table tr:hover {
+    background-color: #e0f7fa;
+}
+
+.back-btn {
+    background-color: #FFEB3D;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    background-color: #FFC107;
+}

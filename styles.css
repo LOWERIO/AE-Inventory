@@ -1,85 +1,58 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #f4f4f9;
-    color: #333;
+    padding: 20px;
 }
-
-header {
+h1 {
     text-align: center;
-    background-color: #007acc;
-    color: white;
-    padding: 1em 0;
 }
-
-main {
-    margin: 2em auto;
-    max-width: 800px;
-    padding: 1em;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2 {
-    text-align: center;
-    margin-bottom: 1em;
-}
-
-#weeks-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 1em;
-}
-
 .week-tile {
-    background-color: #007acc;
-    color: white;
-    text-align: center;
-    padding: 1em;
+    display: inline-block;
+    padding: 20px;
+    margin: 10px;
+    background-color: #e0f7fa;
     border-radius: 8px;
+    text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.2s;
 }
-
 .week-tile:hover {
-    background-color: #005fa3;
+    transform: scale(1.05);
 }
-
-input, select, textarea, button {
-    width: 100%;
-    padding: 0.8em;
-    margin: 0.5em 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.week-tile:active {
+    background-color: #b2ebf2;
 }
-
-button {
-    background-color: #007acc;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+#checklist-section {
+    display: none;
 }
-
-button:hover {
-    background-color: #005fa3;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1em;
 }
-
-th, td {
-    padding: 0.8em;
-    text-align: left;
+table, th, td {
     border: 1px solid #ccc;
 }
-
+th, td {
+    padding: 10px;
+    text-align: center;
+}
 th {
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
+}
+button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ffeb3d;
+    border: none;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: #ffe082;
+}
+input[type="text"], select {
+    padding: 8px;
+    margin: 5px;
+}
+.back-btn {
+    margin-top: 10px;
 }

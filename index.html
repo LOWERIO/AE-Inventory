@@ -11,13 +11,20 @@
 
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <header>
-        <h1>IT Doctor Checklist</h1>
-        <p>Inspect and log the status of IT components.</p>
+        <h1>IT Doctor Weekly Checklist</h1>
+        <p>Inspect IT components and track weekly progress.</p>
     </header>
     <main>
+        <section>
+            <form id="week-selector">
+                <label for="week">Select Week:</label>
+                <input type="week" id="week" required>
+                <button type="button" id="load-week">Load Week</button>
+            </form>
+        </section>
+
         <form id="checklist-form">
             <div class="input-group">
                 <label for="component-name">Component Name:</label>
@@ -40,7 +47,7 @@
         </form>
 
         <section id="checklist">
-            <h2>Checklist</h2>
+            <h2>Weekly Checklist</h2>
             <table>
                 <thead>
                     <tr>
@@ -54,6 +61,9 @@
                     <!-- Items will be added here -->
                 </tbody>
             </table>
+            <button id="save-week">Save Checklist</button>
+            <button id="export-data">Export Data</button>
+            <input type="file" id="import-data" accept=".json">
         </section>
     </main>
     <script src="script.js"></script>

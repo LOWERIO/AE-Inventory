@@ -1,17 +1,3 @@
-// Firebase configuration (replace with your actual configuration)
-const firebaseConfig = {
-    apiKey: "AIzaSyDNoPJvYYTEXv3jZxGHQUcbwv82J5C5Tno",
-    authDomain: "datacheck-11e08.firebaseapp.com",
-    databaseURL: "https://datacheck-11e08-default-rtdb.firebaseio.com",
-    projectId: "datacheck-11e08",
-    storageBucket: "datacheck-11e08.firebasestorage.app",
-    messagingSenderId: "385327087776",
-    appId: "1:385327087776:web:291a453c0157205d7809c5",
-};
-
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const database = firebase.getDatabase(app);
 
 // DOM Elements
 const weeksContainer = document.getElementById("weeks-container");

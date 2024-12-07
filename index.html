@@ -14,57 +14,55 @@
 <body>
     <header>
         <h1>IT Doctor Weekly Checklist</h1>
-        <p>Inspect IT components and track weekly progress.</p>
+        <p>Select a week to manage your IT inspection checklist.</p>
     </header>
     <main>
-        <section>
-            <form id="week-selector">
-                <label for="week">Select Week:</label>
-                <input type="week" id="week" required>
-                <button type="button" id="load-week">Load Week</button>
-            </form>
+        <section id="week-grid">
+            <h2>Weeks</h2>
+            <div id="weeks-container">
+                <!-- Week tiles will be dynamically generated -->
+            </div>
         </section>
 
-        <form id="checklist-form">
-            <div class="input-group">
-                <label for="component-name">Component Name:</label>
-                <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
-            </div>
-            <div class="input-group">
-                <label for="component-status">Status:</label>
-                <select id="component-status" required>
-                    <option value="OK">OK</option>
-                    <option value="Has a Problem">Has a Problem</option>
-                    <option value="Not OK">Not OK</option>
-                    <option value="Not Working">Not Working</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="notes">Notes:</label>
-                <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
-            </div>
-            <button type="submit">Add to Checklist</button>
-        </form>
+        <section id="checklist-section" style="display: none;">
+    <h2 id="selected-week-title">Checklist</h2>
+    <form id="checklist-form">
+        <div class="input-group">
+            <label for="component-name">Component Name:</label>
+            <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
+        </div>
+        <div class="input-group">
+            <label for="component-status">Status:</label>
+            <select id="component-status" required>
+                <option value="OK">OK</option>
+                <option value="Has a Problem">Has a Problem</option>
+                <option value="Not OK">Not OK</option>
+                <option value="Not Working">Not Working</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="notes">Notes:</label>
+            <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
+        </div>
+        <button type="button" id="add-item">Add to Checklist</button>
+    </form>
 
-        <section id="checklist">
-            <h2>Weekly Checklist</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Component</th>
-                        <th>Status</th>
-                        <th>Notes</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="checklist-table-body">
-                    <!-- Items will be added here -->
-                </tbody>
-            </table>
-            <button id="save-week">Save Checklist</button>
-            <button id="export-data">Export Data</button>
-            <input type="file" id="import-data" accept=".json">
-        </section>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="checklist-table-body">
+            <!-- Checklist rows will be dynamically added -->
+        </tbody>
+    </table>
+
+    <button id="back-to-weeks">Back to Weeks</button>
+</section>
     </main>
     <script src="script.js"></script>
 </body>

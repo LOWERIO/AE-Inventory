@@ -80,7 +80,6 @@ addItemButton.addEventListener("click", () => {
     const componentName = document.getElementById("component-name").value.trim();
     const status = document.getElementById("component-status").value;
     const notes = document.getElementById("notes").value.trim();
-    console.log(document.querySelector(document.getElementById("component-status").value))
     if (!componentName) {
         alert("Please provide a component name.");
         return;

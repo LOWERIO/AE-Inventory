@@ -1,43 +1,54 @@
-/* styles.css */
+:root {
+    --accent-color: #1E3A5F;
+    --accent-hover-color: #162A47;
+    --background-color: #121212;
+    --foreground-color: #e0e0e0;
+    --container-bg-color: #1e1e1e;
+    --border-color: #444;
+}
+
+* {
+    user-select: none;
+}
 body {
     font-family: "Roboto", monospace;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
     scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     background: transparent;
     width: 10px;
 }
 
-::-webkit-scrollbar-thumb{
-    background-color:#007acc;
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
     border-radius: 10px;
-    border: 1px solid white;
+    border: 1px solid var(--container-bg-color);
 }
 
-::-webkit-scrollbar-thumb:hover{
-    background-color: #005fa3;
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-hover-color);
 }
-
 
 header {
     text-align: center;
-    background-color: #007acc;
-    color: white;
+    background-color: var(--container-bg-color);
+    color: var(--foreground-color);
     padding: 1em 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 main {
     margin: 2em auto;
     max-width: 800px;
     padding: 1em;
-    background: white;
+    background: var(--container-bg-color);
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 h1, h2 {
@@ -52,8 +63,9 @@ h1, h2 {
 }
 
 .week-tile {
-    background-color: #007acc;
-    color: white;
+    border: 2px solid rgba(255,255,255,0.4);
+    background-color: var(--accent-color);
+    color: var(--foreground-color);
     text-align: center;
     padding: 1em;
     border-radius: 8px;
@@ -62,29 +74,31 @@ h1, h2 {
 }
 
 .week-tile:hover {
-    background-color: #005fa3;
-    scale: .9;
+    background-color: var(--accent-hover-color);
+    scale: 0.9;
 }
 
 input, select, textarea, button {
     padding: 0.8em;
     margin: 0.5em 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
+    background-color: var(--container-bg-color);
+    color: var(--foreground-color);
 }
 
-select{
-    width: 100%
+select {
+    width: 100%;
 }
 
-input, textarea{
+input, textarea {
     width: 97%;
 }
 
 button {
     width: 100%;
-    background-color: #007acc;
-    color: white;
+    background-color: var(--accent-color);
+    color: var(--foreground-color);
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -92,65 +106,67 @@ button {
 }
 
 button:hover {
-    background-color: #005fa3;
-    scale: .95;
+    background-color: var(--accent-hover-color);
+    scale: 0.95;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1em;
-    transition: all 0.2s;
+    background-color: var(--container-bg-color);
     overflow-x: hidden;
+    transition: all 0.2s;
 }
 
 th, td {
     text-transform: capitalize;
     padding: 0.8em;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
+    color: var(--foreground-color);
 }
+
 th {
-    background-color: #f9f9f9;
+    background-color: #2a2a2a;
 }
 
-.OK{
-    background-color: rgb(13, 194, 13);
+.OK {
+    background-color: #4CAF50;
     color: white;
     font-weight: bold;
 }
 
-.Problem{
-    background-color: rgb(196, 196, 15);
+.Problem {
+    background-color: #e0992d;
     color: white;
     font-weight: bold;
 }
 
-.Repair{
-    background-color: rgba(255,0,0);
+.Repair {
+    background-color: #f44336;
     color: white;
     font-weight: bold;
 }
 
-.Missing{
-    background-color: black;
+.Missing {
+    background-color: #383838;
     color: white;
 }
 
-.remove_item{
+.remove_item {
     color: white;
     font-weight: bold !important;
-    background-color: red;
+    background-color: #f44336;
 }
 
-.remove_item:hover{
-    background-color: red;
+.remove_item:hover {
+    background-color: #b32d23;
 }
-
 
 /* Modal styles */
 .modal {
-    display: none;
+    scale: 0;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -158,16 +174,18 @@ th {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: all 0.2s;
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: var(--container-bg-color);
     margin: 10% auto;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    color: var(--foreground-color);
 }
 
 .modal-actions {
@@ -189,6 +207,25 @@ th {
     color: white;
 }
 
+#back-to-weeks {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    bottom: 25px;
+    left: 30px;
+    position: fixed;
+    scale: 2;
+    transition: all 0.2s;
+    background-color: var(--container-bg-color);
+    color: var(--foreground-color);
+    border: 1px solid var(--border-color);
+}
+
+#back-to-weeks:hover {
+    scale: 1.5;
+    background-color: #f44336;
+}
+
 #cancel-edit {
     background-color: #f44336;
     color: white;
@@ -199,6 +236,7 @@ th {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    color: var(--foreground-color);
 }
 
 .close:hover {
@@ -210,16 +248,28 @@ th {
     display: flex;
     gap: 20px;
     align-items: center;
+    color: var(--foreground-color);
 }
 
 #filters label {
     font-weight: bold;
 }
 
-#filters select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+#create-item {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    bottom: 25px;
+    right: 30px;
+    position: fixed;
+    scale: 2;
+    transition: all 0.2s;
+    background-color: var(--container-bg-color);
+    color: var(--foreground-color);
+    border: 1px solid var(--border-color);
 }
 
-
+#create-item:hover {
+    scale: 1.5;
+    background-color: #4CAF50;
+}

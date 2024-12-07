@@ -121,7 +121,7 @@ function editRow(button) {
 
     // Show the modal
     const modal = document.getElementById("edit-modal");
-    modal.style.display = "block";
+    modal.style.scale = 1;
 
     // Add save changes functionality
     document.getElementById("save-changes").onclick = () => {
@@ -138,15 +138,31 @@ function editRow(button) {
 
         sortTable(); // Re-sort after editing
         saveCurrentWeek(); // Save changes
-        modal.style.display = "none"; // Close modal
+        modal.style.scale = 0; // Close modal
     };
 
     // Close modal on cancel
     document.getElementById("cancel-edit").onclick = () => {
-        modal.style.display = "none";
+        modal.style.scale = 0;
     };
     document.getElementById("close-modal").onclick = () => {
-        modal.style.display = "none";
+        modal.style.scale = 0;
+    };
+}
+
+function create_item() {
+    const modal = document.getElementById("add-modal");
+    modal.style.scale = 1;
+
+    document.getElementById("add-item").onclick = () => {
+        modal.style.display = "none"; // Close modal
+    };
+
+    document.getElementById("cancel-add").onclick = () => {
+        modal.style.scale = 0;
+    };
+    document.getElementById("close-add").onclick = () => {
+        modal.style.scale = 0;
     };
 }
 

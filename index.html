@@ -25,29 +25,10 @@
                 <!-- Week tiles will be dynamically generated -->
             </div>
         </section>
-
+        
         <section id="checklist-section" style="display: none;">
+            <button onclick="create_item()" id="create-item">+</button>
     <h2 id="selected-week-title">Checklist</h2>
-    <form id="checklist-form">
-        <div class="input-group">
-            <label for="component-name">Component Name:</label>
-            <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
-        </div>
-        <div class="input-group">
-            <label for="component-status">Status:</label>
-            <select id="component-status" required>
-                <option value="OK">OK</option>
-                <option value="Problem">Has a Problem</option>
-                <option value="Repair">Needs Repair</option>
-                <option value="Missing">Missing</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="notes">Notes:</label>
-            <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
-        </div>
-        <button type="button" id="add-item">Add to Checklist</button>
-    </form>
     <div id="filters">
         <label for="filter-prefix">Prefix:</label>
         <select id="filter-prefix">
@@ -104,7 +85,36 @@
         </div>
     </div>
 </div>
-    <button id="back-to-weeks">Back to Weeks</button>
+
+<div id="add-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-add">&times;</span>
+        <form>
+            <div class="input-group">
+                <label for="component-name">Component Name:</label>
+                <input type="text" id="component-name" placeholder="e.g., Camera 1" required>
+            </div>
+            <div class="input-group">
+                <label for="component-status">Status:</label>
+                <select id="component-status" required>
+                    <option value="OK">OK</option>
+                    <option value="Problem">Has a Problem</option>
+                    <option value="Repair">Needs Repair</option>
+                    <option value="Missing">Missing</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="notes">Notes:</label>
+                <textarea id="notes" placeholder="Describe any issues or observations"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button style="background-color: #4CAF50;" id="add-item">Create Item</button>
+                <button style="background-color: #f44336;" id="cancel-add">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+    <button id="back-to-weeks">↩</button>
 </section>
     </main>
     <script src="script.js"></script>

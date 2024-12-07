@@ -59,10 +59,16 @@ function loadOrCreateWeek(week) {
 function addRowToTable(componentName, status, notes) {
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td>${componentName}</td>
-        <td class="${status}"><div class="${status}"></div>${status}</td>
-        <td>${notes}</td>
-        <td><button class="remove_item" onclick="removeRow(this)">Remove</button></td>
+        <td contenteditable="false">${componentName}</td>
+        <td contenteditable="false" class="${status}">
+            <div class="${status}"></div>${status}
+        </td>
+        <td contenteditable="false">${notes}</td>
+        <td>
+            <button class="edit-item" onclick="editRow(this)">Edit</button>
+            <button class="save-item" style="display:none;" onclick="saveRow(this)">Save</button>
+            <button class="remove-item" onclick="removeRow(this)">Remove</button>
+        </td>
     `;
     checklistTableBody.appendChild(row);
     saveCurrentWeek(); // Automatically save after adding a row
@@ -73,6 +79,34 @@ function removeRow(button) {
     const row = button.parentElement.parentElement;
     row.remove();
     saveCurrentWeek(); // Automatically save after removing a row
+}
+
+// Edit a row in the checklist table
+function editRow(button) {
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll("td");
+
+    cells.forEach(cell => {
+        cell.contentEditable = "true";
+    });
+
+    button.style.display = "none"; // Hide the "Edit" button
+    row.querySelector(".save-item").style.display = "inline"; // Show the "Save" button
+}
+
+// Save an edited row in the checklist table
+function saveRow(button) {
+    const row = button.parentElement.parentElement;
+    const cells = row.querySelectorAll("td");
+
+    cells.forEach(cell => {
+        cell.contentEditable = "false";
+    });
+
+    button.style.display = "none"; // Hide the "Save" button
+    row.querySelector(".edit-item").style.display = "inline"; // Show the "Edit" button
+
+    saveCurrentWeek(); // Save the updated data to Firebase
 }
 
 // Add a new item to the checklist
@@ -86,6 +120,10 @@ addItemButton.addEventListener("click", () => {
     }
 
     addRowToTable(componentName, status, notes);
+
+    // Clear form inputs
+    document.getElementById("component-name").value = "";
+    document.getElementById("notes").value = "";
 });
 
 // Save the current week's checklist to Firebase
@@ -95,7 +133,7 @@ function saveCurrentWeek() {
         const cells = row.querySelectorAll("td");
         return {
             componentName: cells[0].textContent,
-            status: cells[1].textContent,
+            status: cells[1].textContent.trim(),
             notes: cells[2].textContent,
         };
     });

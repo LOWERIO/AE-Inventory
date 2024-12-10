@@ -24,7 +24,7 @@ const addItemButton = document.getElementById("add-item");
 let currentWeek = "";
 
 // Prefix hierarchy for sorting
-const prefixHierarchy = ["AD", "CC", "WR"];
+const prefixHierarchy = ["AD", "CC", "CC PT" ,"WR"];
 
 
 const filterStatus = document.getElementById("filter-status");
@@ -155,7 +155,7 @@ function create_item() {
     modal.style.scale = 1;
 
     document.getElementById("add-item").onclick = () => {
-        modal.style.display = "none"; // Close modal
+        modal.style.scale = 0; // Close modal
     };
 
     document.getElementById("cancel-add").onclick = () => {
@@ -205,8 +205,6 @@ function saveCurrentWeek() {
     const ref = database.ref('checklists/' + currentWeek);
     ref.set(data).catch(console.error);
 }
-
-// Function to sort the table rows
 function sortTable() {
     const rows = Array.from(checklistTableBody.querySelectorAll("tr"));
 
@@ -219,8 +217,8 @@ function sortTable() {
         const [prefixB, numberB] = parseStation(nameB);
 
         // Compare by prefix hierarchy
-        const prefixOrderA = prefixHierarchy.indexOf(prefixA);
-        const prefixOrderB = prefixHierarchy.indexOf(prefixB);
+        const prefixOrderA = getCustomPrefixOrder(prefixA);
+        const prefixOrderB = getCustomPrefixOrder(prefixB);
 
         if (prefixOrderA !== prefixOrderB) {
             return prefixOrderA - prefixOrderB; // Sort by prefix
@@ -234,9 +232,16 @@ function sortTable() {
     rows.forEach(row => checklistTableBody.appendChild(row));
 }
 
+// Custom prefix order logic
+function getCustomPrefixOrder(prefix) {
+    // Handle specific cases for sub-prefixes
+    if (prefix === "CC PT") return prefixHierarchy.indexOf("CC") + 0.5; // Place "CC PT" after "CC"
+    return prefixHierarchy.indexOf(prefix);
+}
+
 // Parse station name into prefix and number
 function parseStation(name) {
-    const match = name.match(/^([A-Z]+)\s+station\s+(\d+)$/i);
+    const match = name.match(/^([A-Z]+(?:\sPT)?)\s+station\s+(\d+)$/i);
     if (match) {
         return [match[1].toUpperCase(), parseInt(match[2], 10)];
     }

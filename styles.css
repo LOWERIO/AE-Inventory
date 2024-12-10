@@ -273,3 +273,139 @@ th {
     scale: 1.5;
     background-color: #4CAF50;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    main {
+        margin: 1em;
+        padding: 0.5em;
+    }
+
+    table {
+        display: block; /* Allow table to scroll horizontally */
+        overflow-x: auto; /* Add horizontal scrollbar if needed */
+    }
+
+    th, td {
+        white-space: nowrap; /* Prevent text wrapping in cells */
+        padding: 0.5em;
+    }
+
+    /* Stack actions vertically */
+    .actions-column {
+        text-align: center;
+        display: flex;
+        flex-direction: column; /* Stack buttons */
+        gap: 5px;
+    }
+
+    header {
+        padding: 0.5em 0;
+    }
+
+    h1, h2 {
+        font-size: 1.5em;
+    }
+
+    #weeks-container {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5em;
+    }
+
+    .week-tile {
+        padding: 0.5em;
+        font-size: 0.8em;
+    }
+
+    input, select, textarea, button {
+        padding: 0.6em;
+        font-size: 0.9em;
+    }
+
+    #filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    th, td {
+        padding: 0.5em;
+    }
+
+    #back-to-weeks, #create-item {
+        scale: 1.5;
+        width: 30px;
+        height: 30px;
+    }
+
+    /* Modal adjustments for smaller screens */
+    .modal-content {
+        width: 90%;
+        margin: 20% auto;
+        padding: 10px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* For ultra-small devices (e.g., < 480px) */
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: 1.2em;
+    }
+
+    /* Hide less-important columns (example: Date, Status) */
+    .hidden-small {
+        display: none;
+    }
+
+    /* Optimize actions column */
+    .actions-column {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 3px;
+    }
+
+    #weeks-container {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+
+    .week-tile {
+        padding: 0.3em;
+        font-size: 0.7em;
+    }
+
+    input, select, textarea, button {
+        padding: 0.5em;
+        font-size: 0.8em;
+    }
+
+    table {
+        font-size: 0.8em;
+    }
+
+    th, td {
+        padding: 0.3em;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 5px;
+    }
+
+    #back-to-weeks, #create-item {
+        scale: 1.2;
+        width: 25px;
+        height: 25px;
+    }
+}

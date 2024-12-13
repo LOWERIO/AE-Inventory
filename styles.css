@@ -274,11 +274,23 @@ th {
     background-color: #4CAF50;
 }
 
+#HoursModal{
+    opacity: 0;
+    border-radius: 0 10px 10px 0;
+    position: fixed;
+    background-color: var(--container-bg-color);
+    color: var(--foreground-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    padding: 1em;
+    left: -35px;
+    scale: .8;
+    top: 165px;
+    transition: all 0.5s;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
 
     main {
         margin: 1em;
@@ -323,7 +335,6 @@ th {
 
     input, select, textarea, button {
         padding: 0.6em;
-        font-size: 0.9em;
     }
 
     #filters {
@@ -340,9 +351,9 @@ th {
     }
 
     #back-to-weeks, #create-item {
-        scale: 1.5;
-        width: 30px;
-        height: 30px;
+        scale: 2;
+        width: 60px;
+        height: 60px;
     }
 
     /* Modal adjustments for smaller screens */

@@ -21,6 +21,8 @@ const selectedWeekTitle = document.getElementById("selected-week-title");
 const backToWeeksButton = document.getElementById("back-to-weeks");
 const addItemButton = document.getElementById("add-item");
 
+const Hours = document.getElementById("HoursModal");
+
 let currentWeek = "";
 
 // Prefix hierarchy for sorting
@@ -74,6 +76,16 @@ function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
 
+    switch (week) {
+        case 'Week 1':
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 10H30 - 16H:30 (6 Hours)</p><p>Monday : 10H - 12H (6 Hours)</p><p>Tuesday : 9H - 12H (3 Hours)</p><p>Wednsday : 9H - 12H (3 Hours)</p><p>Thursday : 10H - 12H (2 Hours)</p>";
+            break;
+    
+        case 'Week 2':
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : TEST </p>";
+            break;
+    }
+
     checklistTableBody.innerHTML = ""; // Clear existing rows
     checklistSection.style.display = "block";
     weeksContainer.parentElement.style.display = "none";
@@ -106,6 +118,10 @@ function addRowToTable(componentName, status, notes) {
     sortTable(); // Sort rows after adding
     saveCurrentWeek(); // Automatically save after adding a row
 }
+
+document.getElementById("hoursweek1").addEventListener("click",()=>{
+    Hours.style.opacity = Hours.style.opacity == 1 ? 0 : 1;
+})
 
 // Edit a row in the checklist table
 function editRow(button) {

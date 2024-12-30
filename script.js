@@ -82,7 +82,15 @@ function loadOrCreateWeek(week) {
             break;
     
         case 'Week 2':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 13H (4 Hours)</p><p>Monday : 9H - 11H (3 Hours)</p><p>Tuesday : 9H - 10H (1 Hour)</p><p>Wednsday : 9H - 10H (1 Hour)</p><p>Thursday : 9H30 - 11H30 (3 Hours)</p><p>Friday : 9H - </p>";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 13H (4 Hours)</p><p>Monday : 9H - 11H (3 Hours)</p><p>Tuesday : 9H - 10H (1 Hour)</p><p>Wednsday : 9H - 10H (1 Hour)</p><p>Thursday : 9H30 - 11H30 (3 Hours)</p><p>Friday : 9H - 11H (2 Hours)</p>";
+            break;
+            
+        case 'Week 3':
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 11H (2 Hours)</p><p>Monday : 9H - 12H (3 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Wednsday : 9H - 10H (1 Hour)</p><p>Thursday : 9H - 10H (1 Hour)</p><p>Friday : 9H - 10H (1 Hour)</p>";
+            break;
+
+        case 'Week 4':
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 11H (2 Hours)</p><p>Sunday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hour)</p><p>Tuesday : ...</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Saturday : ...</p>";
             break;
     }
 

@@ -60,7 +60,7 @@ function applyFilters() {
 
 
 // Generate week tiles
-function generateWeeks(numWeeks = 52) {
+function generateWeeks(numWeeks = 4) {
     for (let i = 1; i <= numWeeks; i++) {
         const weekTile = document.createElement("div");
         weekTile.className = "week-tile";
@@ -78,19 +78,19 @@ function loadOrCreateWeek(week) {
 
     switch (week) {
         case 'Week 1':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 10H30 - 16H:30 (6 Hours)</p><p>Monday : 10H - 12H (2 Hours)</p><p>Tuesday : 9H - 12H (3 Hours)</p><p>Wednsday : 9H - 12H (3 Hours)</p><p>Thursday : 10H - 12H (2 Hours)</p><p>Friday: 9H - 12H (3 Hours)";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 12H (3 Hours)</p><p>Wednsday : 9H - 10H (1 Hours)</p><p>Thursday : 9H - 12H (3 Hours)</p><p>Friday: 9H - 11H (2 Hours)";
             break;
     
         case 'Week 2':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 13H (4 Hours)</p><p>Monday : 9H - 11H (3 Hours)</p><p>Tuesday : 9H - 10H (1 Hour)</p><p>Wednsday : 9H - 10H (1 Hour)</p><p>Thursday : 9H30 - 11H30 (3 Hours)</p><p>Friday : 9H - 11H (2 Hours)</p>";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Friday : ...</p>";
             break;
             
         case 'Week 3':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 11H (2 Hours)</p><p>Monday : 9H - 12H (3 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Thursday : 9H - 10H (1 Hour)</p><p>Friday : 9H - 10H (1 Hour)</p>";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : ...</p><p>Monday : ...</p><p>Tuesday : ...</p><p>Thursday : ...</p><p>Friday : ...</p>";
             break;
 
         case 'Week 4':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 11H (2 Hours)</p><p>Sunday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hour)</p><p>Tuesday : ...</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Saturday : ...</p>";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : ...</p><p>Sunday : ...</p><p>Monday : ...</p><p>Tuesday : ...</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Saturday : ...</p>";
             break;
     }
 

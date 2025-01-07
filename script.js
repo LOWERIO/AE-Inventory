@@ -82,7 +82,7 @@ function loadOrCreateWeek(week) {
             break;
     
         case 'Week 2':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Friday : ...</p>";
+            Hours.innerHTML = "<h1>HOURS</h1><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Friday : ...</p><p>Saturday : ...</p>";
             break;
             
         case 'Week 3':

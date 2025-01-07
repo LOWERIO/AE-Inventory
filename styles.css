@@ -60,6 +60,8 @@ h1, h2 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 1em;
+    position: relative;
+    left: 175px;
 }
 
 .week-tile {

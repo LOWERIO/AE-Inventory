@@ -107,10 +107,6 @@ function addRowToTable(componentName, status, notes) {
     saveCurrentWeek(); // Automatically save after adding a row
 }
 
-document.getElementById("hoursweek1").addEventListener("click",()=>{
-    Hours.style.opacity = Hours.style.opacity == 1 ? 0 : 1;
-})
-
 // Edit a row in the checklist table
 function editRow(button) {
     const row = button.parentElement.parentElement;

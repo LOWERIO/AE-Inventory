@@ -21,8 +21,6 @@ const selectedWeekTitle = document.getElementById("selected-week-title");
 const backToWeeksButton = document.getElementById("back-to-weeks");
 const addItemButton = document.getElementById("add-item");
 
-const Hours = document.getElementById("HoursModal");
-
 let currentWeek = "";
 
 // Prefix hierarchy for sorting
@@ -75,24 +73,6 @@ function generateWeeks(numWeeks = 4) {
 function loadOrCreateWeek(week) {
     currentWeek = week;
     selectedWeekTitle.textContent = `${week} Checklist`;
-
-    switch (week) {
-        case 'Week 1':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : 9H - 12H (3 Hours)</p><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 12H (3 Hours)</p><p>Wednsday : 9H - 10H (1 Hours)</p><p>Thursday : 9H - 12H (3 Hours)</p><p>Friday: 9H - 11H (2 Hours)";
-            break;
-    
-        case 'Week 2':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Monday : 9H - 11H (2 Hours)</p><p>Tuesday : 9H - 11H (2 Hour)</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Friday : ...</p><p>Saturday : ...</p>";
-            break;
-            
-        case 'Week 3':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : ...</p><p>Monday : ...</p><p>Tuesday : ...</p><p>Thursday : ...</p><p>Friday : ...</p>";
-            break;
-
-        case 'Week 4':
-            Hours.innerHTML = "<h1>HOURS</h1><p>Saturday : ...</p><p>Sunday : ...</p><p>Monday : ...</p><p>Tuesday : ...</p><p>Wednsday : ...</p><p>Thursday : ...</p><p>Saturday : ...</p>";
-            break;
-    }
 
     checklistTableBody.innerHTML = ""; // Clear existing rows
     checklistSection.style.display = "block";

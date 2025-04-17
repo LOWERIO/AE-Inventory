@@ -151,9 +151,10 @@ function editRow(button) {
 }
 
 function create_item() {
+    const input = document.getElementById("component-name");
     const modal = document.getElementById("add-modal");
     modal.style.scale = 1;
-
+    input.focus();
     document.getElementById("add-item").onclick = () => {
         modal.style.scale = 0; // Close modal
     };

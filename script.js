@@ -234,11 +234,11 @@ function sortTable() {
 }
 
 // Custom prefix order logic
-//function getCustomPrefixOrder(prefix) {
-    // Handle specific cases for sub-prefixes
-  //  if (prefix === "CC PT") return prefixHierarchy.indexOf("CC") + 0.5; // Place "CC PT" after "CC"
-    //return prefixHierarchy.indexOf(prefix);
-//}
+function getCustomPrefixOrder(prefix) {
+    //Handle specific cases for sub-prefixes
+      // Place "CC PT" after "CC"
+        return prefixHierarchy.indexOf(prefix);
+}
 
 // Parse station name into prefix and number
 function parseStation(name) {

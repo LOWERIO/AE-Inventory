@@ -24,7 +24,7 @@ const addItemButton = document.getElementById("add-item");
 let currentWeek = "";
 
 // Prefix hierarchy for sorting
-const prefixHierarchy = ["AD", "DL" , "CC" ,"WR"];
+const prefixHierarchy = ["AD", "DL", "CC", "CC PT", "WR"];
 
 
 const filterStatus = document.getElementById("filter-status");
@@ -235,9 +235,9 @@ function sortTable() {
 
 // Custom prefix order logic
 function getCustomPrefixOrder(prefix) {
-    //Handle specific cases for sub-prefixes
-         if (prefix === "CC") return prefixHierarchy.indexOf("DL") + 0.5; // Place "CC PT" after "CC"
-        return prefixHierarchy.indexOf(prefix);
+    // Handle specific cases for sub-prefixes
+    if (prefix === "CC PT") return prefixHierarchy.indexOf("CC") + 0.5; // Place "CC PT" after "CC"
+    return prefixHierarchy.indexOf(prefix);
 }
 
 // Parse station name into prefix and number

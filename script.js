@@ -24,7 +24,7 @@ const addItemButton = document.getElementById("add-item");
 let currentWeek = "";
 
 // Prefix hierarchy for sorting
-const prefixHierarchy = ["AD", "DL", "CC", "CC PT", "WR"];
+const prefixHierarchy = ["AD", "CC", "CC PT", "WR"];
 
 
 const filterStatus = document.getElementById("filter-status");

@@ -236,7 +236,7 @@ function sortTable() {
 // Custom prefix order logic
 function getCustomPrefixOrder(prefix) {
     //Handle specific cases for sub-prefixes
-      // Place "CC PT" after "CC"
+         if (prefix === "CC") return prefixHierarchy.indexOf("DL") + 0.5; // Place "CC PT" after "CC"
         return prefixHierarchy.indexOf(prefix);
 }
 

@@ -1,6 +1,6 @@
-let SHEET_ID = '1Z5_GlQdhNzj9_gm8G9UjCPjlRVSTX-fnmDVljPDOkEA'
-let SHEET_TITLE = 'Player_Shoes';
-let SHEET_RANGE = 'E13:F23'
+let SHEET_ID = '1ypvAsg6eFpVN21lAOvIwbHhM4y9Dk5BbxFXLl8Eb-Go'
+let SHEET_TITLE = 'ADMIN OFFICE';
+let SHEET_RANGE = 'A3:D6'
 
 let FULL_URL = ('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + SHEET_TITLE + '&range=' + SHEET_RANGE);
 

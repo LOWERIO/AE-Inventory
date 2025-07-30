@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h2>Admin</h2>
+  <h2 id="tittle-all">Admin</h2>
 
   <form id="login-form">
     <input type="email" id="email" placeholder="Email" required />
@@ -19,10 +19,9 @@
     <div>
       <input type="text" id="new-station-name" placeholder="Novo Nome da Estação" />
       <button id="add-station-btn">+ Adicionar Estação</button>
-      <button id="remove-station-btn" style="background-color: #e04848; margin-top: 1em;">-</button>
     </div>
 
-    <div id="Current_Station">Estação : <select id="station-select"></select></div>
+    <div id="Current_Station"><select id="station-select"></select><button id="remove-station-btn" style="background-color: #e04848; margin-top: 1em;">Excluir!</button></div>
 
     <ul id="item-list"></ul>
 

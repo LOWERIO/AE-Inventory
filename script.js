@@ -186,6 +186,8 @@ function reindexItems() {
   attachInputListeners();
 }
 
+const tt = document.getElementById("tittle-all");
+
 // Login form submit handler
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -196,6 +198,7 @@ loginForm.addEventListener("submit", async (e) => {
     await signInWithEmailAndPassword(auth, email, password);
     loginForm.style.display = "none";
     adminUI.style.display = "block";
+    tt.style.display = "none";
 
     await loadStations();
 

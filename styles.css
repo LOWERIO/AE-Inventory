@@ -238,25 +238,27 @@ li input {
 
 
 #Current_Station{
-  align-items: center;
-  position: fixed;
-  width: 100px;
-  top: 10px;
-  left: 10px;
-  font-weight: bolder;
+  align-items: baseline;
+    position: absolute;
+    width: fit-content;
+    top: 10px;
+    left: 10px;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
 }
 
 #station-select{
-  margin-top: 10px !important;
   text-align: center;
   border: gainsboro 1px solid;
+  width: 100%;
 }
 
 #remove-station-btn{
-  position: fixed;
-  width: 100px;
-  top: 25px;
-  left: 150px;
+  width: min-content;
 }
 
 

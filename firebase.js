@@ -1,4 +1,4 @@
-<script type="module">
+
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
@@ -24,4 +24,3 @@
   const auth = getAuth(app);
 
   export { db, auth };
-</script>

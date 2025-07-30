@@ -27,7 +27,6 @@ STATIONS.forEach(station => {
   stationSelect.appendChild(opt);
 });
 
-// Handle login
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = document.getElementById("email").value;
@@ -36,26 +35,33 @@ loginForm.addEventListener("submit", async (e) => {
     await signInWithEmailAndPassword(auth, email, password);
     loginForm.style.display = "none";
     adminUI.style.display = "block";
+
+    // Load first station after login
+    const firstStation = STATIONS[0];
+    stationSelect.value = firstStation;
+    await loadStationItems(firstStation);
   } catch (err) {
     alert("Login failed: " + err.message);
   }
 });
 
-// Load items when station changes
 stationSelect.addEventListener("change", async () => {
-  const stationId = stationSelect.value;
+  await loadStationItems(stationSelect.value);
+});
+
+async function loadStationItems(stationId) {
   const stationRef = ref(db, `stations/${stationId}`);
   const snap = await get(stationRef);
   const data = snap.exists() ? snap.val().items || [] : [];
 
   itemList.innerHTML = "";
   data.forEach((item, i) => renderItem(item, i));
-});
+}
 
-// Render an item row
 function renderItem(item, index) {
   const li = document.createElement("li");
   li.innerHTML = `
+    <h4>ITEM ${index + 1}</h4>
     <input id="name-${index}" value="${item.name}" placeholder="Name" />
     <input id="brand-${index}" value="${item.brand}" placeholder="Brand" />
     <input id="color-${index}" value="${item.color}" placeholder="Color" />
@@ -64,13 +70,11 @@ function renderItem(item, index) {
   itemList.appendChild(li);
 }
 
-// Add blank item
 addItemBtn.addEventListener("click", () => {
   const index = itemList.children.length;
   renderItem({ name: "", brand: "", color: "", quantity: 1 }, index);
 });
 
-// Save to Realtime Database
 saveBtn.addEventListener("click", async () => {
   const stationId = stationSelect.value;
   const items = [...itemList.children].map((li, i) => ({

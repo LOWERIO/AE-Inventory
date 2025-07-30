@@ -8,7 +8,7 @@ fetch(FULL_URL)
 .then(res => res.text())
 .then(rep => {
     let data = JSON.parse(rep.substr(47).slice(0,-2));
-
+    console.log(data)
     let player_Name_title = document.getElementById('player_Name_title');
     let player_Shoe_title = document.getElementById('player_Shoe_title');
     let player_Name = document.getElementById('player_Name');

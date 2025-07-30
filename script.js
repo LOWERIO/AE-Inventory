@@ -1,7 +1,7 @@
 import { db, auth } from "./firebase.js";
 import {
-  doc, getDoc, setDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  ref, get, set
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import {
   signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -44,9 +44,9 @@ loginForm.addEventListener("submit", async (e) => {
 // Load items when station changes
 stationSelect.addEventListener("change", async () => {
   const stationId = stationSelect.value;
-  const ref = doc(db, "stations", stationId);
-  const snap = await getDoc(ref);
-  const data = snap.exists() ? snap.data().items : [];
+  const stationRef = ref(db, `stations/${stationId}`);
+  const snap = await get(stationRef);
+  const data = snap.exists() ? snap.val().items || [] : [];
 
   itemList.innerHTML = "";
   data.forEach((item, i) => renderItem(item, i));
@@ -70,7 +70,7 @@ addItemBtn.addEventListener("click", () => {
   renderItem({ name: "", brand: "", color: "", quantity: 1 }, index);
 });
 
-// Save to Firebase
+// Save to Realtime Database
 saveBtn.addEventListener("click", async () => {
   const stationId = stationSelect.value;
   const items = [...itemList.children].map((li, i) => ({
@@ -79,6 +79,11 @@ saveBtn.addEventListener("click", async () => {
     color: li.querySelector(`#color-${i}`).value,
     quantity: parseInt(li.querySelector(`#qty-${i}`).value),
   }));
-  await setDoc(doc(db, "stations", stationId), { items });
-  alert("Saved successfully!");
+  try {
+    await set(ref(db, `stations/${stationId}`), { items });
+    alert("Saved successfully!");
+  } catch (err) {
+    alert("Save failed: " + err.message);
+    console.error(err);
+  }
 });

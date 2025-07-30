@@ -1,6 +1,8 @@
 import { db, auth } from "./firebase.js";
 import {
-  ref, get, set
+  ref,
+  get,
+  set
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import {
   signInWithEmailAndPassword
@@ -12,82 +14,354 @@ const stationSelect = document.getElementById("station-select");
 const itemList = document.getElementById("item-list");
 const addItemBtn = document.getElementById("add-item");
 const saveBtn = document.getElementById("save-btn");
+const addStationBtn = document.getElementById("add-station-btn");
+const newStationInput = document.getElementById("new-station-name");
+const notificationContainer = document.getElementById("notification-container");
 
-const STATIONS = [
-  "AD STATION 1", "AD STATION 2", "AD STATION 3",
-  "DL STATION 1", "DL STATION 2", "DL STATION 3",
-  "CR STATION 1", "CC STATION 1", "WR STATION 1"
-];
+let hasUnsavedChanges = false;
+let saveTimeout = null;
+const SAVE_DEBOUNCE_MS = 1000; // 1 second debounce to batch quick changes
 
-// Populate station dropdown
-STATIONS.forEach(station => {
-  const opt = document.createElement("option");
-  opt.value = station;
-  opt.textContent = station;
-  stationSelect.appendChild(opt);
-});
 
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    loginForm.style.display = "none";
-    adminUI.style.display = "block";
 
-    // Load first station after login
-    const firstStation = STATIONS[0];
-    stationSelect.value = firstStation;
-    await loadStationItems(firstStation);
-  } catch (err) {
-    alert("Login failed: " + err.message);
+
+// Show notification message on screen
+function showNotification(message, type = "success") {
+  const notif = document.createElement("div");
+  notif.className = `notification ${type}`;
+  notif.textContent = message;
+
+  notificationContainer.appendChild(notif);
+
+  // Remove notification after 5 seconds
+  setTimeout(() => {
+    notif.remove();
+  }, 5000);
+}
+
+// Load all stations from Firebase and populate dropdown
+async function loadStations() {
+  const stationsRef = ref(db, 'stations');
+  const snapshot = await get(stationsRef);
+  stationSelect.innerHTML = ''; // clear existing options
+
+  if (!snapshot.exists()) {
+    const opt = document.createElement("option");
+    opt.value = '';
+    opt.textContent = 'Nenhuma estação disponível';
+    stationSelect.appendChild(opt);
+    return;
   }
-});
 
-stationSelect.addEventListener("change", async () => {
-  await loadStationItems(stationSelect.value);
-});
+  const stationsData = snapshot.val();
+  Object.keys(stationsData).forEach(stationId => {
+    const opt = document.createElement("option");
+    opt.value = stationId;
+    opt.textContent = stationId;
+    stationSelect.appendChild(opt);
+  });
+}
 
+// Load items for selected station and render
 async function loadStationItems(stationId) {
+  if (!stationId) return;
+
   const stationRef = ref(db, `stations/${stationId}`);
   const snap = await get(stationRef);
   const data = snap.exists() ? snap.val().items || [] : [];
 
   itemList.innerHTML = "";
   data.forEach((item, i) => renderItem(item, i));
+  reindexItems(); // ensure IDs and listeners
+  hasUnsavedChanges = false; // just loaded fresh data, no changes yet
 }
 
+// Add or remove operations set this and schedule save
+function scheduleAutoSave() {
+  hasUnsavedChanges = true;
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    saveChanges();
+  }, SAVE_DEBOUNCE_MS);
+}
+
+// Save current item list to Firebase for selected station
+async function saveChanges() {
+  if (!hasUnsavedChanges) return;
+
+  const stationId = stationSelect.value;
+  if (!stationId) {
+    showNotification("Seleciona uma estação primeiro.", "error");
+    return;
+  }
+
+  const items = [...itemList.children].map((li, i) => ({
+    name: li.querySelector(`#name-${i}`).value.trim(),
+    brand: li.querySelector(`#brand-${i}`).value.trim(),
+    color: li.querySelector(`#color-${i}`).value.trim(),
+    quantity: parseInt(li.querySelector(`#qty-${i}`).value) || 1,
+  }));
+
+  try {
+    const dataToSave = {};
+
+    if (items.length === 0) {
+      
+      dataToSave.createdAt = Date.now();
+      dataToSave.items = [];
+    } else {
+     
+      dataToSave.items = items;
+    }
+
+    await set(ref(db, `stations/${stationId}`), dataToSave);
+  } catch (err) {
+    showNotification("Falha ao guardar : " + err.message, "error");
+    console.error(err);
+  }
+}
+
+// Attach input listeners for auto-save on all inputs in the item list
+function attachInputListeners() {
+  [...itemList.children].forEach((li, i) => {
+    ["name", "brand", "color", "qty"].forEach(field => {
+      const input = li.querySelector(`#${field}-${i}`);
+      if (input) {
+        input.addEventListener("input", scheduleAutoSave);
+      }
+    });
+  });
+}
+
+// Render a single item with Portuguese labels and remove button
 function renderItem(item, index) {
   const li = document.createElement("li");
   li.innerHTML = `
     <h4>ITEM ${index + 1}</h4>
-    <input id="name-${index}" value="${item.name}" placeholder="Name" />
-    <input id="brand-${index}" value="${item.brand}" placeholder="Brand" />
-    <input id="color-${index}" value="${item.color}" placeholder="Color" />
-    <input id="qty-${index}" type="number" value="${item.quantity}" placeholder="Quantity" />
+
+    <label for="name-${index}">Nome</label>
+    <input id="name-${index}" value="${item.name}" placeholder="Nome" />
+
+    <label for="brand-${index}">Marca</label>
+    <input id="brand-${index}" value="${item.brand}" placeholder="Marca" />
+
+    <label for="color-${index}">Cor</label>
+    <input id="color-${index}" value="${item.color}" placeholder="Cor" />
+
+    <label for="qty-${index}">Quantidade</label>
+    <input id="qty-${index}" type="number" value="${item.quantity}" placeholder="Quantidade" min="1" />
+
+    <button class="remove-item-btn">Remover</button>
   `;
+
+  li.querySelector(".remove-item-btn").addEventListener("click", () => {
+    li.remove();
+    reindexItems();
+    scheduleAutoSave(); // autosave on remove
+  });
+
   itemList.appendChild(li);
+
+  attachInputListeners();
 }
 
+// After removing or adding items, re-index inputs & labels and re-attach listeners
+function reindexItems() {
+  [...itemList.children].forEach((li, i) => {
+    li.querySelector("h4").textContent = `ITEM ${i + 1}`;
+
+    li.querySelector("label[for^='name-']").setAttribute("for", `name-${i}`);
+    li.querySelector("input[id^='name-']").id = `name-${i}`;
+
+    li.querySelector("label[for^='brand-']").setAttribute("for", `brand-${i}`);
+    li.querySelector("input[id^='brand-']").id = `brand-${i}`;
+
+    li.querySelector("label[for^='color-']").setAttribute("for", `color-${i}`);
+    li.querySelector("input[id^='color-']").id = `color-${i}`;
+
+    li.querySelector("label[for^='qty-']").setAttribute("for", `qty-${i}`);
+    li.querySelector("input[id^='qty-']").id = `qty-${i}`;
+  });
+
+  attachInputListeners();
+}
+
+// Login form submit handler
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    loginForm.style.display = "none";
+    adminUI.style.display = "block";
+
+    await loadStations();
+
+    if (stationSelect.options.length > 0) {
+      stationSelect.value = stationSelect.options[0].value;
+      await loadStationItems(stationSelect.value);
+    }
+  } catch (err) {
+    showNotification("Falha ao iniciar sessão: " + err.message, "error");
+  }
+});
+
+// Station select change handler
+stationSelect.addEventListener("change", async () => {
+  await loadStationItems(stationSelect.value);
+});
+
+// Add new item button handler
 addItemBtn.addEventListener("click", () => {
   const index = itemList.children.length;
   renderItem({ name: "", brand: "", color: "", quantity: 1 }, index);
+  reindexItems();
+  scheduleAutoSave();
+  updateButtonsState();
 });
 
-saveBtn.addEventListener("click", async () => {
+
+const removeStationBtn = document.getElementById("remove-station-btn");
+
+const confirmModal = document.getElementById("confirm-modal");
+const confirmYesBtn = document.getElementById("confirm-yes");
+const confirmNoBtn = document.getElementById("confirm-no");
+
+let stationToDelete = null;  // Guarda o id da estação a remover
+
+removeStationBtn.addEventListener("click", () => {
   const stationId = stationSelect.value;
-  const items = [...itemList.children].map((li, i) => ({
-    name: li.querySelector(`#name-${i}`).value,
-    brand: li.querySelector(`#brand-${i}`).value,
-    color: li.querySelector(`#color-${i}`).value,
-    quantity: parseInt(li.querySelector(`#qty-${i}`).value),
-  }));
+  if (!stationId) {
+    showNotification("Selecione uma estação para remover.", "error");
+    return;
+  }
+
+  stationToDelete = stationId;
+  confirmModal.style.display = "flex";  // Mostrar modal
+});
+
+// Se o utilizador clicar em "Sim"
+confirmYesBtn.addEventListener("click", async () => {
+  if (!stationToDelete) return;
+
+  confirmModal.style.display = "none";
+
   try {
-    await set(ref(db, `stations/${stationId}`), { items });
-    alert("Saved successfully!");
+    await set(ref(db, `stations/${stationToDelete}`), null);
+
+    showNotification(`Estação "${stationToDelete}" removida com sucesso!`, "success");
+
+    await loadStations();
+
+    if (stationSelect.options.length > 0) {
+      stationSelect.value = stationSelect.options[0].value;
+      await loadStationItems(stationSelect.value);
+    } else {
+      itemList.innerHTML = "";
+    }
+
+    updateButtonsState();
+
   } catch (err) {
-    alert("Save failed: " + err.message);
+    showNotification("Falha ao remover estação: " + err.message, "error");
+    console.error(err);
+  } finally {
+    stationToDelete = null;
+  }
+});
+
+// Se o utilizador clicar em "Cancelar"
+confirmNoBtn.addEventListener("click", () => {
+  stationToDelete = null;
+  confirmModal.style.display = "none";
+});
+
+
+
+// Add new station button handler
+addStationBtn.addEventListener("click", async () => {
+  const newStationName = newStationInput.value.trim();
+  if (!newStationName) {
+    showNotification("Por favor, insira o nome da estação.", "error");
+    return;
+  }
+
+  try {
+    const stationRef = ref(db, `stations/${newStationName}`);
+    const snap = await get(stationRef);
+
+    if (snap.exists()) {
+      showNotification("A estação já existe.", "error");
+      return;
+    }
+
+    await set(stationRef, { iSelecionas: [], createdAt: Date.now() });
+    showNotification(`Estação "${newStationName}" adicionada!`, "success");
+
+    await loadStations();
+    
+    // // Add new station to dropdown and select it
+    // const opt = document.createElement("option");
+    // opt.value = newStationName;
+    // opt.textContent = newStationName;
+    // stationSelect.appendChild(opt);
+
+    // stationSelect.value = newStationName;
+    // await loadStationItems(newStationName);
+
+    newStationInput.value = "";
+    updateButtonsState();
+
+  } catch (err) {
+    showNotification("Falha ao adicionar estação: " + err.message, "error");
     console.error(err);
   }
 });
+
+window.addEventListener("beforeunload", (e) => {
+  if (hasUnsavedChanges) {
+    e.preventDefault();
+    e.returnValue = "Tens a certeza que queres sair sem guardar as alterações?";
+    return e.returnValue;
+  }
+});
+
+function updateButtonsState() {
+  const stationSelected = stationSelect.value && stationSelect.value.trim() !== "";
+
+  addItemBtn.style.display = stationSelected ? "block" : "none";
+  removeStationBtn.style.display = stationSelected ? "block" : "none";
+}
+
+stationSelect.addEventListener("change", () => {
+  updateButtonsState();
+  loadStationItems(stationSelect.value);
+});
+
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    loginForm.style.display = "none";
+    adminUI.style.display = "block";
+
+    await loadStations();
+
+    if (stationSelect.options.length > 0) {
+      stationSelect.value = stationSelect.options[0].value;
+      await loadStationItems(stationSelect.value);
+    }
+    updateButtonsState();
+  } catch (err) {
+    showNotification("Falha ao iniciar sessão: " + err.message, "error");
+  }
+});
+
+
+updateButtonsState();

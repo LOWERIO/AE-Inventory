@@ -3,6 +3,7 @@
   import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -19,5 +20,16 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const auth = getAuth(app);
+
+  import { setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      console.log("Persistência ativada");
+    })
+    .catch((error) => {
+      console.error("Erro na persistência:", error);
+    });
+
 
   export { db, auth };

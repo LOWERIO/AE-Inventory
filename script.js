@@ -2,7 +2,7 @@ let SHEET_ID = '1ypvAsg6eFpVN21lAOvIwbHhM4y9Dk5BbxFXLl8Eb-Go'
 let SHEET_TITLE = 'ADMIN OFFICE';
 let SHEET_RANGE = 'A3:D6'
 
-let FULL_URL = ('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + SHEET_TITLE + '&range=' + SHEET_RANGE);
+let FULL_URL = ('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + SHEET_TITLE);
 
 fetch(FULL_URL)
 .then(res => res.text())

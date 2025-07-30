@@ -116,7 +116,7 @@ li input {
 }
 
 /* Responsive tweaks */
-@media (max-width: 480px) {
+@media (max-width: 780px) {
   body {
     padding: 1rem 0.8rem;
   }

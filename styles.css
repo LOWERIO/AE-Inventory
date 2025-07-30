@@ -127,6 +127,16 @@ li input {
   li {
     padding: 12px 15px;
   }
+  #admin-ui{
+    margin-top: 150px;
+  }
+  #remove-station-btn {
+    width: 95% !important;
+  }
+  #Current_Station {
+    width: 95% !important;
+    align-items: center !important;
+  }
 }
 
 
@@ -239,16 +249,16 @@ li input {
 
 #Current_Station{
   align-items: baseline;
-    position: absolute;
-    width: fit-content;
-    top: 10px;
-    left: 10px;
-    font-weight: bolder;
-    display: flex;
-    flex-direction: column;
-    height: 100px;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+  position: absolute;
+  width: fit-content;
+  top: 10px;
+  left: 10px;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
 }
 
 #station-select{

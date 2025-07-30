@@ -1,44 +1,84 @@
-let SHEET_ID = '1ypvAsg6eFpVN21lAOvIwbHhM4y9Dk5BbxFXLl8Eb-Go'
-let SHEET_TITLE = 'ADMIN OFFICE';
-let SHEET_RANGE = 'A3:D6'
+import { db, auth } from "./firebass.js";
+import {
+  doc, getDoc, setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-let FULL_URL = ('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + SHEET_TITLE);
+const loginForm = document.getElementById("login-form");
+const adminUI = document.getElementById("admin-ui");
+const stationSelect = document.getElementById("station-select");
+const itemList = document.getElementById("item-list");
+const addItemBtn = document.getElementById("add-item");
+const saveBtn = document.getElementById("save-btn");
 
-fetch(FULL_URL)
-.then(res => res.text())
-.then(rep => {
-    let data = JSON.parse(rep.substr(47).slice(0,-2));
-    console.log(data)
-    let player_Name_title = document.getElementById('player_Name_title');
-    let player_Shoe_title = document.getElementById('player_Shoe_title');
-    let player_Name = document.getElementById('player_Name');
-    let player_Shoe = document.getElementById('player_Shoe');
-    let length = data.table.rows.length;
+const STATIONS = [
+  "AD STATION 1", "AD STATION 2", "AD STATION 3",
+  "DL STATION 1", "DL STATION 2", "DL STATION 3",
+  "CR STATION 1", "CC STATION 1", "WR STATION 1"
+];
 
+// Populate station dropdown
+STATIONS.forEach(station => {
+  const opt = document.createElement("option");
+  opt.value = station;
+  opt.textContent = station;
+  stationSelect.appendChild(opt);
+});
 
-    player_Name_title.innerHTML = data.table.rows[0].c[0].v;
-    player_Shoe_title.innerHTML = data.table.rows[0].c[1].v;
-    let selectOptionPlayer = document.createElement('select');
-    player_Name.append(selectOptionPlayer);
+// Handle login
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    loginForm.style.display = "none";
+    adminUI.style.display = "block";
+  } catch (err) {
+    alert("Login failed: " + err.message);
+  }
+});
 
-    for(let i = 1;i<length;i++){
+// Load items when station changes
+stationSelect.addEventListener("change", async () => {
+  const stationId = stationSelect.value;
+  const ref = doc(db, "stations", stationId);
+  const snap = await getDoc(ref);
+  const data = snap.exists() ? snap.data().items : [];
 
-        let NewBoxPlayer = document.createElement('option');
-        NewBoxPlayer.id = ("box"+i);
-        NewBoxPlayer.className = "Some_Style";
-        selectOptionPlayer.append(NewBoxPlayer);
-        NewBoxPlayer.innerHTML = data.table.rows[i].c[0].v;
+  itemList.innerHTML = "";
+  data.forEach((item, i) => renderItem(item, i));
+});
 
-        let NewBoxShoe = document.createElement('div');
-        let space = document.createElement('hr');
-        let space2 = document.createElement('hr');
-        NewBoxShoe.id = ("box"+i);
-        NewBoxShoe.className = "Some_Style";
-        player_Shoe.append(NewBoxShoe);
-        player_Shoe.append(space);
-        player_Shoe.append(space2);
-        NewBoxShoe.innerHTML = data.table.rows[i].c[1].v; 
+// Render an item row
+function renderItem(item, index) {
+  const li = document.createElement("li");
+  li.innerHTML = `
+    <input id="name-${index}" value="${item.name}" placeholder="Name" />
+    <input id="brand-${index}" value="${item.brand}" placeholder="Brand" />
+    <input id="color-${index}" value="${item.color}" placeholder="Color" />
+    <input id="qty-${index}" type="number" value="${item.quantity}" placeholder="Quantity" />
+  `;
+  itemList.appendChild(li);
+}
 
-    }
- 
-})
+// Add blank item
+addItemBtn.addEventListener("click", () => {
+  const index = itemList.children.length;
+  renderItem({ name: "", brand: "", color: "", quantity: 1 }, index);
+});
+
+// Save to Firebase
+saveBtn.addEventListener("click", async () => {
+  const stationId = stationSelect.value;
+  const items = [...itemList.children].map((li, i) => ({
+    name: li.querySelector(`#name-${i}`).value,
+    brand: li.querySelector(`#brand-${i}`).value,
+    color: li.querySelector(`#color-${i}`).value,
+    quantity: parseInt(li.querySelector(`#qty-${i}`).value),
+  }));
+  await setDoc(doc(db, "stations", stationId), { items });
+  alert("Saved successfully!");
+});

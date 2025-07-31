@@ -61,7 +61,6 @@ function isEmptyOrWhitespace(str) {
 
 function displayCombinedItems(firebaseItems, sheetItems) {
   const display = document.getElementById("display_DB_itms");
-  display.innerHTML = `<h2>Comparação Items da Estação ${stationID}:</h2>`;
 
   if (firebaseItems.length === 0 && sheetItems.length === 0) {
     display.innerHTML += `<p>Nenhum item encontrado.</p>`;
@@ -128,7 +127,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 function display_DB_INFO() {
   const display = document.getElementById("display_DB_sts");
   const info = document.createElement("h1");
-  info.textContent = "Estação " + stationID + " a ser verificada!";
+  info.textContent =stationID;
   display.append(info);
 }
 

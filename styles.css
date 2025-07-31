@@ -1,7 +1,7 @@
 /* Base and layout */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 480px;
+  max-width: 590px;
   margin: auto;
   padding: 1.5rem 1rem;
   background: #121212;
@@ -60,6 +60,13 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0 0 1.5em 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
 }
 
 li {
@@ -92,6 +99,21 @@ li input {
   padding: 0.5em 0.8em;
   font-size: 0.95rem;
 }
+
+#display_DB_itms{
+  background: #1f1f1f;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.7);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  color: #ddd;
+}
+
+
 
 /* Remove item button inside list item */
 .remove-item-btn {
@@ -269,4 +291,14 @@ li input {
 
 #remove-station-btn{
   width: min-content;
+}
+
+.valid{
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.invalid{
+  color: #e04848;
+  font-weight: bold;
 }

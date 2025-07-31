@@ -23,6 +23,13 @@ let saveTimeout = null;
 const SAVE_DEBOUNCE_MS = 1000; 
 
 
+document.getElementById("verificar_st").addEventListener("click", () => {
+  open_check();
+});
+
+function open_check(){
+  window.open(`./check.html?id=${stationSelect.value}`)
+}
 
 
 // Show notification message on screen
@@ -223,7 +230,7 @@ stationSelect.addEventListener("change", async () => {
 // Add new item button handler
 addItemBtn.addEventListener("click", () => {
   const index = itemList.children.length;
-  renderItem({ name: "", brand: "", color: "", quantity: 1 }, index);
+  renderItem({ name: "",quantity: 1, brand: "", color: ""  }, index);
   reindexItems();
   scheduleAutoSave();
   updateButtonsState();
@@ -369,6 +376,8 @@ loginForm.addEventListener("submit", async (e) => {
     showNotification("Falha ao iniciar sessão: " + err.message, "error");
   }
 });
+
+
 
 
 

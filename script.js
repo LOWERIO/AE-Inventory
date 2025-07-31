@@ -97,9 +97,9 @@ async function saveChanges() {
 
   const items = [...itemList.children].map((li, i) => ({
     name: li.querySelector(`#name-${i}`).value.trim(),
+    quantity: parseInt(li.querySelector(`#qty-${i}`).value) || 1,
     brand: li.querySelector(`#brand-${i}`).value.trim(),
     color: li.querySelector(`#color-${i}`).value.trim(),
-    quantity: parseInt(li.querySelector(`#qty-${i}`).value) || 1,
   }));
 
   try {
@@ -124,7 +124,7 @@ async function saveChanges() {
 // Attach input listeners for auto-save on all inputs in the item list
 function attachInputListeners() {
   [...itemList.children].forEach((li, i) => {
-    ["name", "brand", "color", "qty"].forEach(field => {
+    ["name", "qty", "brand", "color"].forEach(field => {
       const input = li.querySelector(`#${field}-${i}`);
       if (input) {
         input.addEventListener("input", scheduleAutoSave);
@@ -142,14 +142,16 @@ function renderItem(item, index) {
     <label for="name-${index}">Nome</label>
     <input id="name-${index}" value="${item.name}" placeholder="Nome" />
 
+    <label for="qty-${index}">Quantidade</label>
+    <input id="qty-${index}" type="number" value="${item.quantity}" placeholder="Quantidade" min="1" />
+
     <label for="brand-${index}">Marca</label>
     <input id="brand-${index}" value="${item.brand}" placeholder="Marca" />
 
     <label for="color-${index}">Cor</label>
     <input id="color-${index}" value="${item.color}" placeholder="Cor" />
 
-    <label for="qty-${index}">Quantidade</label>
-    <input id="qty-${index}" type="number" value="${item.quantity}" placeholder="Quantidade" min="1" />
+    
 
     <button class="remove-item-btn">Remover</button>
   `;
@@ -173,14 +175,16 @@ function reindexItems() {
     li.querySelector("label[for^='name-']").setAttribute("for", `name-${i}`);
     li.querySelector("input[id^='name-']").id = `name-${i}`;
 
+    li.querySelector("label[for^='qty-']").setAttribute("for", `qty-${i}`);
+    li.querySelector("input[id^='qty-']").id = `qty-${i}`;
+
     li.querySelector("label[for^='brand-']").setAttribute("for", `brand-${i}`);
     li.querySelector("input[id^='brand-']").id = `brand-${i}`;
 
     li.querySelector("label[for^='color-']").setAttribute("for", `color-${i}`);
     li.querySelector("input[id^='color-']").id = `color-${i}`;
 
-    li.querySelector("label[for^='qty-']").setAttribute("for", `qty-${i}`);
-    li.querySelector("input[id^='qty-']").id = `qty-${i}`;
+    
   });
 
   attachInputListeners();

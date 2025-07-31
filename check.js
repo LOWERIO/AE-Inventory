@@ -4,11 +4,6 @@ import {
   get,
   set
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import {
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
 
 const query = window.location.search
 
@@ -23,7 +18,9 @@ async function loadStationItems(stationId) {
   const snap = await get(stationRef);
   const data = snap.exists() ? snap.val().items || [] : [];
 
-  console.log(data)
+
+  console.log(data);
+
 }
 
 

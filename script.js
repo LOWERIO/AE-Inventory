@@ -20,7 +20,7 @@ const notificationContainer = document.getElementById("notification-container");
 
 let hasUnsavedChanges = false;
 let saveTimeout = null;
-const SAVE_DEBOUNCE_MS = 1000; // 1 second debounce to batch quick changes
+const SAVE_DEBOUNCE_MS = 1000; 
 
 
 
@@ -369,3 +369,4 @@ loginForm.addEventListener("submit", async (e) => {
 
 
 updateButtonsState();
+

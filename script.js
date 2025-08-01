@@ -173,40 +173,6 @@ function renderItem(item, index) {
 
   attachInputListeners();
 }
-async function updateItemInSheet(stationID, item) {
-  const webAppURL = 'https://script.google.com/macros/s/AKfycbza_UXYKKvSIePBr_OI3aCKCv8cGqblUMbplZQVgp_iQ-mhjZEeF8LxkjcIyRKlI3Ia/exec';
-
-  try {
-    const response = await fetch(webAppURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        stationID,
-        name: item.name,
-        quantity: item.quantity,
-        brand: item.brand,
-        color: item.color
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const text = await response.text();
-    alert("Resposta do servidor: " + text);
-  } catch (error) {
-    console.error("Erro ao enviar:", error);
-    alert("Erro ao comunicar com o servidor.");
-  }
-}
-
-document.getElementById("btn_update").addEventListener("click", () => {
-    updateItemInSheet(stationSelect.value, {
-    name: 'TESTE',
-    quantity: 2,
-    brand: 'TESTE',
-    color: 'TESTE'
-  });
-})
 
 // After removing or adding items, re-index inputs & labels and re-attach listeners
 function reindexItems() {

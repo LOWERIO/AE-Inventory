@@ -293,6 +293,11 @@ li input {
   width: min-content;
 }
 
+#display_DB_itms{
+  width: max-content !important;
+}
+
+  
 .valid{
   color: #4caf50;
   font-weight: bold;

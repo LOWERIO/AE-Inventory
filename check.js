@@ -51,7 +51,7 @@ function extractName(fullString) {
 
   let name = fullString.replace(/"\d - /, '');
 
-  name = name.replace(/\w.STATION.*$/i, '').trim();
+  name = name.replace(/\w. STATION.*/i, '').trim();
   return name;
 }
 

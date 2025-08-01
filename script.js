@@ -174,7 +174,7 @@ function renderItem(item, index) {
   attachInputListeners();
 }
 async function updateItemInSheet(stationID, item) {
-  const webAppURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+  const webAppURL = 'https://script.google.com/macros/s/AKfycbza_UXYKKvSIePBr_OI3aCKCv8cGqblUMbplZQVgp_iQ-mhjZEeF8LxkjcIyRKlI3Ia/exec';
 
   try {
     const response = await fetch(webAppURL, {

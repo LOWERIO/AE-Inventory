@@ -116,7 +116,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     display.innerHTML += `
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 4px;">
         <div class="${nameValid ? 'valid' : 'invalid'}">${displayName}</div>
-        <div class="${qtyValid ? 'valid' : 'invalid'}">${displayQuantity}</div>
+        <div  class="${qtyValid ? 'valid' : 'invalid'} qty">${displayQuantity}</div>
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
       </div>

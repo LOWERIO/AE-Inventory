@@ -71,7 +71,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   display.innerHTML += `
     <div style="display: grid; grid-template-columns: repeat(4, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
       <div>Nome</div>
-      <div>Quantidade</div>
+      <div style='text-align: center;'>Quantidade</div>
       <div>Marca</div>
       <div>Cor</div>
     </div>

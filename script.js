@@ -320,10 +320,10 @@ addStationBtn.addEventListener("click", async () => {
     // const opt = document.createElement("option");
     // opt.value = newStationName;
     // opt.textContent = newStationName;
-    // stationSelect.appendChild(opt);
+    
 
     stationSelect.value = newStationName;
-    // await loadStationItems(newStationName);
+    await loadStationItems(newStationName);
 
     newStationInput.value = "";
     updateButtonsState();

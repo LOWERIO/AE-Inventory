@@ -322,7 +322,7 @@ addStationBtn.addEventListener("click", async () => {
     // opt.textContent = newStationName;
     // stationSelect.appendChild(opt);
 
-    // stationSelect.value = newStationName;
+    stationSelect.value = newStationName;
     // await loadStationItems(newStationName);
 
     newStationInput.value = "";

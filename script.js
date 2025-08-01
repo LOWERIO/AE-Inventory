@@ -174,6 +174,8 @@ function renderItem(item, index) {
   attachInputListeners();
 }
 
+
+
 // After removing or adding items, re-index inputs & labels and re-attach listeners
 function reindexItems() {
   [...itemList.children].forEach((li, i) => {

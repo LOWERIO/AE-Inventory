@@ -152,18 +152,20 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   });
 }
 
-// Helper to call backend API to update Google Sheets
+
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();
   formData.append('item', JSON.stringify(item));
   formData.append('stationID', stationID);
 
-  // This will send the request, but you can't check the result!
   await fetch('https://script.google.com/macros/s/AKfycbwegBib_VeLq_QQI2qjRF4ItKPjTK3Dli_g-B8tNoh8asjVtSPBGLtjSMstvtufZxfVlg/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: formData
   });
+
+  loadAndCompareItems(stationID);
+
 }
 
 function display_DB_INFO() {

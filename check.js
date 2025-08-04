@@ -158,7 +158,7 @@ async function sendItemToSheets(item, stationID) {
     item: JSON.stringify(item), 
     stationID 
   });
-  const response = await fetch('https://script.google.com/macros/s/AKfycbz2GxKgx2xuQh6AjS-TbwRAwCX8g72oFudkqb3k62ORFaPgudZDnBS-q9NUUMtkQ4RLMQ/exec?' + params.toString(), {
+  const response = await fetch('https://script.google.com/macros/s/AKfycbwqRbMk9riT3wZFSy9o1ofPC0vUEZjK4LrJw54JZx-4P8u1x9R-Sz1gWPhj39F5XrMJlQ/exec?' + params.toString(), {
     method: 'GET'
   });
   if (!response.ok) throw new Error('Failed to update sheet');

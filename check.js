@@ -118,7 +118,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
         <div>
-          ${isInvalid ? `<button id="${btnId}">Send to Sheets</button>` : ''}
+          ${isInvalid ? `<button id="${btnId}">Sheets</button>` : ''}
         </div>
       </div>
     `;

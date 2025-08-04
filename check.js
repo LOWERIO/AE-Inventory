@@ -107,9 +107,9 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     const displayBrand = isEmptyOrWhitespace(brand) ? '<span style="color:red;">*</span>' : brand;
     const displayColor = isEmptyOrWhitespace(color) ? '<span style="color:red;">*</span>' : color;
 
-    // If any field is invalid, show the button
+
     const isInvalid = !nameValid || !qtyValid || !brandValid || !colorValid;
-    const btnId = `send-to-sheets-${idx}`;
+    const btnId = `sheets-${idx}`;
 
     display.innerHTML += `
       <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px;">
@@ -141,15 +141,29 @@ function displayCombinedItems(firebaseItems, sheetItems) {
           }
           // Call backend endpoint to update Google Sheets
           try {
-            await sendItemToSheets(item, stationID);
-            alert("Item enviado para o Sheets!");
+            sendItemToSheets(item, stationID);
+            showNotification("Item enviado para o Sheets com sucesso!");
           } catch (e) {
-            alert("Erro ao enviar para o Sheets.");
+            showNotification("Erro ao enviar para o Sheets.", "error");
           }
         };
       }
     }, 0);
   });
+}
+
+
+function showNotification(message, type = "success") {
+  const notif = document.createElement("div");
+  notif.className = `notification ${type}`;
+  notif.textContent = message;
+
+  notificationContainer.appendChild(notif);
+
+  // Remove notification after 5 seconds
+  setTimeout(() => {
+    notif.remove();
+  }, 5000);
 }
 
 

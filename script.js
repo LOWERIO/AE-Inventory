@@ -378,58 +378,8 @@ loginForm.addEventListener("submit", async (e) => {
 });
 
 
-// Import from Google Sheets button handler
-document.getElementById("import-from-sheets-btn").addEventListener("click", async () => {
-  showNotification("Importando dados do Sheets...", "success");
-  try {
-    // 1. Fetch CSV from Google Sheets
-    const sheetURL = 'https://docs.google.com/spreadsheets/d/1ypvAsg6eFpVN21lAOvIwbHhM4y9Dk5BbxFXLl8Eb-Go/gviz/tq?tqx=out:csv';
-    const response = await fetch(sheetURL);
-    const csv = await response.text();
 
-    // 2. Parse CSV
-    const rows = csv.split('\n').map(row => row.split(','));
-    // Assumes: Col A = Station+Name, B = Quantity, C = Brand, D = Color
 
-    // 3. Group items by station
-    const stations = {};
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      if (!row[0]) continue;
-      // Extract station ID and item name
-      const match = row[0].match(/^"?([A-Z0-9 _-]+) - (.+)$/i);
-      if (!match) continue;
-      const stationID = match[1].trim();
-      const name = match[2].replace(/"$/, '').trim();
-
-      if (!stations[stationID]) stations[stationID] = [];
-      stations[stationID].push({
-        name,
-        quantity: parseInt(row[1]) || 1,
-        brand: row[2] || "",
-        color: row[3] || ""
-      });
-    }
-
-    // 4. Write to Firebase
-    for (const [stationID, items] of Object.entries(stations)) {
-      await set(ref(db, `stations/${stationID}`), {
-        items,
-        createdAt: Date.now()
-      });
-    }
-
-    showNotification("Importação concluída! Recarregue para ver as alterações.", "success");
-    await loadStations();
-    if (stationSelect.options.length > 0) {
-      stationSelect.value = stationSelect.options[0].value;
-      await loadStationItems(stationSelect.value);
-    }
-  } catch (err) {
-    showNotification("Erro ao importar do Sheets: " + err.message, "error");
-    console.error(err);
-  }
-});
 
 updateButtonsState();
 

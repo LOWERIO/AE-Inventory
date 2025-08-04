@@ -399,7 +399,7 @@ async function removeStationFromSheets(stationID) {
   formData.append('stationID', stationID);
 
   // Replace with your actual Apps Script Web App URL:
-  await fetch('https://script.google.com/macros/s/AKfycbwNMLMZbdhj9JJjltKnoslY6FewrhsbOhW9vsizyrKcSpVf3O9tlzS8UZDOAKZgw8Hw1A/exec', {
+  await fetch('https://script.google.com/macros/s/AKfycbx-fJ_iZshfyr051YnyawxcegaIwWwyWYYL_g82Xni8eErm8OmNtWT91wcKElQhhUUbZw/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: formData
@@ -413,7 +413,7 @@ async function removeItemFromSheets(stationID, itemName) {
   formData.append('itemName', itemName);
 
   // Replace with your actual Apps Script Web App URL:
-  await fetch('https://script.google.com/macros/s/AKfycbwNMLMZbdhj9JJjltKnoslY6FewrhsbOhW9vsizyrKcSpVf3O9tlzS8UZDOAKZgw8Hw1A/exec', {
+  await fetch('https://script.google.com/macros/s/AKfycbx-fJ_iZshfyr051YnyawxcegaIwWwyWYYL_g82Xni8eErm8OmNtWT91wcKElQhhUUbZw/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: formData

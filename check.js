@@ -154,11 +154,12 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
 // Helper to call backend API to update Google Sheets
 async function sendItemToSheets(item, stationID) {
-  console.log("Enviando item para o Sheets:", item, stationID);
-  const response = await fetch('https://script.google.com/macros/s/AKfycbwoAeft2BBsWqDLwXerQ8PffaJ5GijLotCrU5Iqgl2fJXMvxICW3JTcoekW12488GR3_g/exec', { // <-- replace with your Apps Script URL
-    method: 'POST',
-    body: JSON.stringify({ item, stationID }),
-    headers: { 'Content-Type': 'application/json' }
+  const params = new URLSearchParams({ 
+    item: JSON.stringify(item), 
+    stationID 
+  });
+  const response = await fetch('https://script.google.com/macros/s/AKfycbwoAeft2BBsWqDLwXerQ8PffaJ5GijLotCrU5Iqgl2fJXMvxICW3JTcoekW12488GR3_g/exec?' + params.toString(), {
+    method: 'GET'
   });
   if (!response.ok) throw new Error('Failed to update sheet');
 }

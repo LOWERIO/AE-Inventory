@@ -132,7 +132,10 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     const displayBrand = isEmptyOrWhitespace(brand) ? '<span style="color:red;">*</span>' : brand;
     const displayColor = isEmptyOrWhitespace(color) ? '<span style="color:red;">*</span>' : color;
 
-    // If missing in Sheets, highlight row in red
+    // If missing in Sheets or any field is invalid, show button
+    const isInvalid = !nameValid || !qtyValid || !brandValid || !colorValid;
+    const btnId = `send-to-sheets-${idx}`;
+
     const rowStyle = !nameValid ? "background: #ffe5e5; color: #b30000;" : "";
 
     display.innerHTML += `
@@ -142,10 +145,18 @@ function displayCombinedItems(firebaseItems, sheetItems) {
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
         <div>
-          <!-- No button for missing, just visual -->
+          ${isInvalid ? `<button id="${btnId}">Sheets</button>` : ''}
         </div>
       </div>
     `;
+
+    // Attach event listener after rendering
+    setTimeout(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.onclick = () => sendItemToSheets(item, stationID);
+      }
+    }, 0);
   });
 
   // Add missing in DB (present in Sheets but not in DB) as red rows

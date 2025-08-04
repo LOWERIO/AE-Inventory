@@ -159,7 +159,7 @@ async function sendItemToSheets(item, stationID) {
     stationID 
   });
   console.log("Enviando parametos para Sheets:", params.toString());
-  const response = await fetch('https://script.google.com/macros/s/AKfycbwqRbMk9riT3wZFSy9o1ofPC0vUEZjK4LrJw54JZx-4P8u1x9R-Sz1gWPhj39F5XrMJlQ/exec?' + params.toString(), {
+  const response = await fetch('https://script.google.com/macros/s/AKfycbyb8_dwLb2fHb-c-Ih3UHrNunZ24lzT2EXFYbtUohyRLyY8liI1qIg4y7IOA9V34rSV5w/exec?' + params.toString(), {
     method: 'GET'
   });
   if (!response.ok) throw new Error('Failed to update sheet');

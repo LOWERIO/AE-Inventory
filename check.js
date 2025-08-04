@@ -69,61 +69,98 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     return;
   }
 
-  // Header row
   display.innerHTML += `
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
       <div>Nome</div>
       <div style='text-align: center;'>Quantidade</div>
       <div>Marca</div>
       <div>Cor</div>
+      <div>Ações</div>
     </div>
   `;
 
-  firebaseItems.forEach(item => {
+  firebaseItems.forEach((item, idx) => {
     const name = (item.name || '').trim();
     const quantity = String(item.quantity || '').trim();
     const brand = (item.brand || '').trim();
     const color = (item.color || '').trim();
 
-    // Find the matching sheet item by name (case-insensitive)
     const matchingSheetItem = sheetItems.find(sheetItem => {
       return (sheetItem.name || '').trim().toLowerCase() === name.toLowerCase();
     });
 
-    // Normalize sheet values for comparison
     let sheetQuantity = String(matchingSheetItem?.quantity || '').trim();
     let sheetBrand = (matchingSheetItem?.brand || '').trim();
     let sheetColor = (matchingSheetItem?.color || '').trim();
 
-    // Remove any quotes from sheet values
     sheetQuantity = sheetQuantity.replaceAll(/"/g, '');
     sheetBrand = sheetBrand.replaceAll(/"/g, '');
     sheetColor = sheetColor.replaceAll(/"/g, '');
 
-    // Compare each field, case-insensitive, trimmed
     const nameValid = matchingSheetItem !== undefined;
-
     const qtyValid = matchingSheetItem ? quantity.toLowerCase() === sheetQuantity.toLowerCase() : false;
-
     const brandValid = matchingSheetItem ? brand.toLowerCase() === sheetBrand.toLowerCase() : false;
-
     const colorValid = matchingSheetItem ? color.toLowerCase() === sheetColor.toLowerCase() : false;
 
-    // Replace empty/whitespace-only values with red "-"
     const displayName = isEmptyOrWhitespace(name) ? '<span style="color:red;">*</span>' : name;
     const displayQuantity = isEmptyOrWhitespace(quantity) ? '<span style="color:red;">*</span>' : quantity;
     const displayBrand = isEmptyOrWhitespace(brand) ? '<span style="color:red;">*</span>' : brand;
     const displayColor = isEmptyOrWhitespace(color) ? '<span style="color:red;">*</span>' : color;
 
+    // If any field is invalid, show the button
+    const isInvalid = !nameValid || !qtyValid || !brandValid || !colorValid;
+    const btnId = `send-to-sheets-${idx}`;
+
     display.innerHTML += `
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 4px;">
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px;">
         <div class="${nameValid ? 'valid' : 'invalid'}">${displayName}</div>
-        <div  class="${qtyValid ? 'valid' : 'invalid'} qty">${displayQuantity}</div>
+        <div class="${qtyValid ? 'valid' : 'invalid'} qty">${displayQuantity}</div>
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
+        <div>
+          ${isInvalid ? `<button id="${btnId}">Send to Sheets</button>` : ''}
+        </div>
       </div>
     `;
+
+    // Attach event listener after rendering
+    setTimeout(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.onclick = async () => {
+          // Check auth
+          if (!auth.currentUser) {
+            // Prompt sign-in (popup)
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+              await auth.signInWithPopup(provider);
+            } catch (e) {
+              alert("Login failed.");
+              return;
+            }
+          }
+          // Call backend endpoint to update Google Sheets
+          try {
+            await sendItemToSheets(item, stationID);
+            alert("Item enviado para o Sheets!");
+          } catch (e) {
+            alert("Erro ao enviar para o Sheets.");
+          }
+        };
+      }
+    }, 0);
   });
+}
+
+// Helper to call backend API to update Google Sheets
+async function sendItemToSheets(item, stationID) {
+  console.log("Enviando item para o Sheets:", item, stationID);
+  const response = await fetch('https://script.google.com/macros/s/AKfycbwoAeft2BBsWqDLwXerQ8PffaJ5GijLotCrU5Iqgl2fJXMvxICW3JTcoekW12488GR3_g/exec', { // <-- replace with your Apps Script URL
+    method: 'POST',
+    body: JSON.stringify({ item, stationID }),
+    headers: { 'Content-Type': 'application/json' }
+  });
+  if (!response.ok) throw new Error('Failed to update sheet');
 }
 
 function display_DB_INFO() {

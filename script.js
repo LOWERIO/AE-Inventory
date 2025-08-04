@@ -162,14 +162,16 @@ function renderItem(item, index) {
   `;
 
   li.querySelector(".remove-item-btn").addEventListener("click", async () => {
+    // Get the current name from the input (in case it was edited)
+    const stationID = stationSelect.value;
+    const itemName = li.querySelector(`#name-${index}`).value.trim();
+
     // Remove from Firebase UI
     li.remove();
     reindexItems();
     scheduleAutoSave(); // autosave on remove
 
     // Remove from Google Sheets
-    const stationID = stationSelect.value;
-    const itemName = item.name;
     if (stationID && itemName) {
       await removeItemFromSheets(stationID, itemName);
     }

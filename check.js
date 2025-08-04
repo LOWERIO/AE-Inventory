@@ -36,7 +36,7 @@ async function fetchStationItemsFromSheet(stationID) {
     const row = rows[i];
     if (row[0] && row[0].includes(stationID)) {
       matchingItems.push({
-        name: extractName(row[0]) || '',
+        name: extractName(row[0]).replace(/"\d - /, '') || '',
         quantity: row[1] || '',
         brand: row[2] || '',
         color: row[3] || ''

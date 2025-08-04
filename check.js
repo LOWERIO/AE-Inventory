@@ -164,7 +164,7 @@ async function sendItemToSheets(item, stationID) {
     body: formData
   });
 
-  loadAndCompareItems(stationID);
+  window.location.reload();
 
 }
 

@@ -226,7 +226,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();
-  formData.append('shname', 'Call Center');
+  formData.append('shname', 'ADMIN OFFICE');
   formData.append('item', JSON.stringify(item));
   formData.append('stationID', stationID);
 

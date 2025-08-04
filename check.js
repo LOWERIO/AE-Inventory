@@ -63,13 +63,38 @@ function isEmptyOrWhitespace(str) {
 
 function displayCombinedItems(firebaseItems, sheetItems) {
   const display = document.getElementById("display_DB_itms");
+  const missingDiv = document.getElementById("missing_items") || (() => {
+    const div = document.createElement("div");
+    div.id = "missing_items";
+    div.innerHTML = `<h2>Itens em Falta</h2><div id="missing_list"></div>`;
+    display.parentElement.appendChild(div);
+    return div;
+  })();
+  const missingList = missingDiv.querySelector("#missing_list");
+  missingList.innerHTML = "";
 
   if (firebaseItems.length === 0 && sheetItems.length === 0) {
     display.innerHTML += `<p>Nenhum item encontrado.</p>`;
+    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
     return;
   }
 
-  display.innerHTML += `
+  // Find items missing in Sheets (present in DB but not in Sheets)
+  const missingInSheets = firebaseItems.filter(dbItem =>
+    !sheetItems.some(sheetItem =>
+      (sheetItem.name || '').trim().toLowerCase() === (dbItem.name || '').trim().toLowerCase()
+    )
+  );
+
+  // Find items missing in DB (present in Sheets but not in DB)
+  const missingInDB = sheetItems.filter(sheetItem =>
+    !firebaseItems.some(dbItem =>
+      (dbItem.name || '').trim().toLowerCase() === (sheetItem.name || '').trim().toLowerCase()
+    )
+  );
+
+  // Main table
+  display.innerHTML = `
     <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
       <div>Nome</div>
       <div style='text-align: center;'>Quantidade</div>
@@ -85,9 +110,9 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     const brand = (item.brand || '').trim();
     const color = (item.color || '').trim();
 
-    const matchingSheetItem = sheetItems.find(sheetItem => {
-      return (sheetItem.name || '').trim().toLowerCase() === name.toLowerCase();
-    });
+    const matchingSheetItem = sheetItems.find(sheetItem =>
+      (sheetItem.name || '').trim().toLowerCase() === name.toLowerCase()
+    );
 
     let sheetQuantity = String(matchingSheetItem?.quantity || '').trim();
     let sheetBrand = (matchingSheetItem?.brand || '').trim();
@@ -107,49 +132,52 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     const displayBrand = isEmptyOrWhitespace(brand) ? '<span style="color:red;">*</span>' : brand;
     const displayColor = isEmptyOrWhitespace(color) ? '<span style="color:red;">*</span>' : color;
 
-
-    const isInvalid = !nameValid || !qtyValid || !brandValid || !colorValid;
-    const btnId = `sheets-${idx}`;
+    // If missing in Sheets, highlight row in red
+    const rowStyle = !nameValid ? "background: #ffe5e5; color: #b30000;" : "";
 
     display.innerHTML += `
-      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px;">
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px; ${rowStyle}">
         <div class="${nameValid ? 'valid' : 'invalid'}">${displayName}</div>
         <div class="${qtyValid ? 'valid' : 'invalid'} qty">${displayQuantity}</div>
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
         <div>
-          ${isInvalid ? `<button id="${btnId}">Sheets</button>` : ''}
+          <!-- No button for missing, just visual -->
         </div>
       </div>
     `;
-
-    // Attach event listener after rendering
-    setTimeout(() => {
-      const btn = document.getElementById(btnId);
-      if (btn) {
-        btn.onclick = async () => {
-          // Check auth
-          if (!auth.currentUser) {
-            // Prompt sign-in (popup)
-            const provider = new firebase.auth.GoogleAuthProvider();
-            try {
-              await auth.signInWithPopup(provider);
-            } catch (e) {
-              alert("Login failed.");
-              return;
-            }
-          }
-          // Call backend endpoint to update Google Sheets
-          try {
-            sendItemToSheets(item, stationID);
-            showNotification("Item enviado para o Sheets com sucesso!");
-          } catch (e) {
-            showNotification("Erro ao enviar para o Sheets.", "error");
-          }
-        };
-      }
-    }, 0);
   });
+
+  // Add missing in DB (present in Sheets but not in DB) as red rows
+  missingInDB.forEach(item => {
+    display.innerHTML += `
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px; background: #ffe5e5; color: #b30000;">
+        <div class="invalid">${item.name}</div>
+        <div class="invalid">${item.quantity}</div>
+        <div class="invalid">${item.brand}</div>
+        <div class="invalid">${item.color}</div>
+        <div></div>
+      </div>
+    `;
+  });
+
+  // Fill "Itens em Falta" section
+  if (missingInSheets.length === 0 && missingInDB.length === 0) {
+    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
+  } else {
+    if (missingInSheets.length > 0) {
+      missingList.innerHTML += `<b>Em falta no Sheets:</b><ul>` +
+        missingInSheets.map(item =>
+          `<li>${item.name} (${item.quantity}, ${item.brand}, ${item.color})</li>`
+        ).join('') + `</ul>`;
+    }
+    if (missingInDB.length > 0) {
+      missingList.innerHTML += `<b>Em falta na Base de Dados:</b><ul>` +
+        missingInDB.map(item =>
+          `<li>${item.name} (${item.quantity}, ${item.brand}, ${item.color})</li>`
+        ).join('') + `</ul>`;
+    }
+  }
 }
 
 

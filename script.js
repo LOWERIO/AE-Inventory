@@ -158,15 +158,21 @@ function renderItem(item, index) {
     <label for="color-${index}">Cor</label>
     <input id="color-${index}" value="${item.color}" placeholder="Cor" />
 
-    
-
     <button class="remove-item-btn">Remover</button>
   `;
 
-  li.querySelector(".remove-item-btn").addEventListener("click", () => {
+  li.querySelector(".remove-item-btn").addEventListener("click", async () => {
+    // Remove from Firebase UI
     li.remove();
     reindexItems();
     scheduleAutoSave(); // autosave on remove
+
+    // Remove from Google Sheets
+    const stationID = stationSelect.value;
+    const itemName = item.name;
+    if (stationID && itemName) {
+      await removeItemFromSheets(stationID, itemName);
+    }
   });
 
   itemList.appendChild(li);
@@ -264,6 +270,9 @@ confirmYesBtn.addEventListener("click", async () => {
 
   try {
     await set(ref(db, `stations/${stationToDelete}`), null);
+
+    // Remove from Google Sheets as well
+    await removeStationFromSheets(stationToDelete);
 
     showNotification(`Estação "${stationToDelete}" removida com sucesso!`, "success");
 
@@ -382,4 +391,30 @@ loginForm.addEventListener("submit", async (e) => {
 
 
 updateButtonsState();
+async function removeStationFromSheets(stationID) {
+  const formData = new FormData();
+  formData.append('action', 'deleteStation');
+  formData.append('stationID', stationID);
+
+  // Replace with your actual Apps Script Web App URL:
+  await fetch('https://script.google.com/macros/s/AKfycbwNMLMZbdhj9JJjltKnoslY6FewrhsbOhW9vsizyrKcSpVf3O9tlzS8UZDOAKZgw8Hw1A/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  });
+}
+
+async function removeItemFromSheets(stationID, itemName) {
+  const formData = new FormData();
+  formData.append('action', 'deleteItem');
+  formData.append('stationID', stationID);
+  formData.append('itemName', itemName);
+
+  // Replace with your actual Apps Script Web App URL:
+  await fetch('https://script.google.com/macros/s/AKfycbwNMLMZbdhj9JJjltKnoslY6FewrhsbOhW9vsizyrKcSpVf3O9tlzS8UZDOAKZgw8Hw1A/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  });
+}
 

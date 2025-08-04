@@ -161,21 +161,37 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     `;
   });
 
-  // Fill "Itens em Falta" section
+  // Fill "Itens em Falta" section using only divs and grid layout
+  missingList.innerHTML = ""; // Clear previous
+
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
     missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
   } else {
     if (missingInSheets.length > 0) {
-      missingList.innerHTML += `<b>Em falta no Sheets:</b><ul>` +
-        missingInSheets.map(item =>
-          `<li>${item.name} (${item.quantity}, ${item.brand}, ${item.color})</li>`
-        ).join('') + `</ul>`;
+      missingList.innerHTML += `<div style="font-weight:bold; margin-top:8px;">Em falta no Sheets:</div>`;
+      missingInSheets.forEach(item => {
+        missingList.innerHTML += `
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #ffe5e5; color: #b30000; margin-bottom: 4px;">
+            <div class="invalid">${item.name}</div>
+            <div class="invalid">${item.quantity}</div>
+            <div class="invalid">${item.brand}</div>
+            <div class="invalid">${item.color}</div>
+          </div>
+        `;
+      });
     }
     if (missingInDB.length > 0) {
-      missingList.innerHTML += `<b>Em falta na Base de Dados:</b><ul>` +
-        missingInDB.map(item =>
-          `<li>${item.name} (${item.quantity}, ${item.brand}, ${item.color})</li>`
-        ).join('') + `</ul>`;
+      missingList.innerHTML += `<div style="font-weight:bold; margin-top:12px;">Em falta na Base de Dados:</div>`;
+      missingInDB.forEach(item => {
+        missingList.innerHTML += `
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #ffe5e5; color: #b30000; margin-bottom: 4px;">
+            <div class="invalid">${item.name}</div>
+            <div class="invalid">${item.quantity}</div>
+            <div class="invalid">${item.brand}</div>
+            <div class="invalid">${item.color}</div>
+          </div>
+        `;
+      });
     }
   }
 }

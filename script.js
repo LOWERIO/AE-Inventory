@@ -61,11 +61,37 @@ async function loadStations() {
   }
 
   const stationsData = snapshot.val();
+
+  // Define your codename to group mapping here
+  const groupMap = {
+    "AD": "ADMIN OFFICE",
+    "DL": "ADMIN OFFICE",
+    "CC": "TEST OFFICE"
+    // Add more as needed
+  };
+
+  // Group stations by codename
+  const groups = {};
   Object.keys(stationsData).forEach(stationId => {
-    const opt = document.createElement("option");
-    opt.value = stationId;
-    opt.textContent = stationId;
-    stationSelect.appendChild(opt);
+    // Extract codename (assumes codename is first 2 letters, adjust if needed)
+    const codename = stationId.substring(0, 2).toUpperCase();
+    const groupName = groupMap[codename] || "OUTROS";
+
+    if (!groups[groupName]) groups[groupName] = [];
+    groups[groupName].push(stationId);
+  });
+
+  // Sort group names and stations within each group
+  Object.keys(groups).sort().forEach(groupName => {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = groupName;
+    groups[groupName].sort().forEach(stationId => {
+      const opt = document.createElement("option");
+      opt.value = stationId;
+      opt.textContent = stationId;
+      optgroup.appendChild(opt);
+    });
+    stationSelect.appendChild(optgroup);
   });
 }
 

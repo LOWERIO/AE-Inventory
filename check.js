@@ -14,7 +14,7 @@ const stationID = url.get('id');
 async function loadStationItems(stationID) {
   if (!stationID) return [];
 
-  const stationRef = ref(db, `stations/${stationID}`);
+  const stationRef = ref(db, `stations/CCPT/${stationID}`);
   const snap = await get(stationRef);
   const data = snap.exists() ? snap.val().items || [] : [];
 

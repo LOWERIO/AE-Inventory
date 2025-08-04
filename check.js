@@ -158,7 +158,7 @@ async function sendItemToSheets(item, stationID) {
   formData.append('item', JSON.stringify(item));
   formData.append('stationID', stationID);
 
-  await fetch('https://script.google.com/macros/s/AKfycbwegBib_VeLq_QQI2qjRF4ItKPjTK3Dli_g-B8tNoh8asjVtSPBGLtjSMstvtufZxfVlg/exec', {
+  await fetch('https://script.google.com/macros/s/AKfycbwT57Ma2EfNvr0bzNkZYTa-fCaXo-LaJJ18Vt50IOTuzSiv_LiygSnHruZdfiB2od729A/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: formData

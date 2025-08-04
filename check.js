@@ -14,7 +14,7 @@ const stationID = url.get('id');
 async function loadStationItems(stationID) {
   if (!stationID) return [];
 
-  const stationRef = ref(db, `stations/CCPT/${stationID}`);
+  const stationRef = ref(db, `stations/${stationID}`);
   const snap = await get(stationRef);
   const data = snap.exists() ? snap.val().items || [] : [];
 
@@ -224,6 +224,7 @@ function showNotification(message, type = "success") {
 
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();
+  formData.append('shname', 'Call Center');
   formData.append('item', JSON.stringify(item));
   formData.append('stationID', stationID);
 

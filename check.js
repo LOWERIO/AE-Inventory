@@ -10,6 +10,9 @@ const url = new URLSearchParams(query);
 const stationID = url.get('id');
 
 
+const notificationContainer = document.getElementById("notification-container");
+
+
 
 async function loadStationItems(stationID) {
   if (!stationID) return [];
@@ -34,7 +37,10 @@ async function fetchStationItemsFromSheet(stationID) {
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    if (row[0] && row[0].includes(stationID)) {
+    if (
+      row[0] &&
+      row[0].includes(stationID)
+    ) {
       matchingItems.push({
         name: extractName(row[0]).replace(/"\d.+- (.+)/, '$1') || '',
         quantity: row[1] || '',
@@ -93,7 +99,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     )
   );
 
-  // Main table
+  // Main table header
   display.innerHTML = `
     <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
       <div>Nome</div>
@@ -104,6 +110,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     </div>
   `;
 
+  // Show all DB items, with "Sheets" button if missing/invalid in Sheets
   firebaseItems.forEach((item, idx) => {
     const name = (item.name || '').trim();
     const quantity = String(item.quantity || '').trim();
@@ -150,7 +157,6 @@ function displayCombinedItems(firebaseItems, sheetItems) {
       </div>
     `;
 
-    // Attach event listener after rendering
     setTimeout(() => {
       const btn = document.getElementById(btnId);
       if (btn) {
@@ -159,21 +165,30 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     }, 0);
   });
 
-  // Add missing in DB (present in Sheets but not in DB) as red rows
-  missingInDB.forEach(item => {
+  // Show all items missing in DB, with "DB" button
+  missingInDB.forEach((item, idx) => {
+    const btnId = `send-to-db-${idx}`;
     display.innerHTML += `
       <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px; background: #ffe5e5; color: #b30000;">
         <div class="invalid">${item.name}</div>
         <div class="invalid">${item.quantity}</div>
         <div class="invalid">${item.brand}</div>
         <div class="invalid">${item.color}</div>
-        <div></div>
+        <div>
+          <button id="${btnId}">DB</button>
+        </div>
       </div>
     `;
+    setTimeout(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.onclick = () => sendItemToDB(item, stationID);
+      }
+    }, 0);
   });
 
   // Fill "Itens em Falta" section using only divs and grid layout
-  missingList.innerHTML = ""; // Clear previous
+  missingList.innerHTML = "";
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
     missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
@@ -208,19 +223,6 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 }
 
 
-function showNotification(message, type = "success") {
-  const notif = document.createElement("div");
-  notif.className = `notification ${type}`;
-  notif.textContent = message;
-
-  notificationContainer.appendChild(notif);
-
-  // Remove notification after 5 seconds
-  setTimeout(() => {
-    notif.remove();
-  }, 5000);
-}
-
 
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();
@@ -236,6 +238,30 @@ async function sendItemToSheets(item, stationID) {
 
   window.location.reload();
 
+}
+
+async function sendItemToDB(item, stationID) {
+  try {
+    // Get current items from Firebase
+    const stationRef = ref(db, `stations/${stationID}`);
+    const snap = await get(stationRef);
+    const data = snap.exists() ? snap.val().items || [] : [];
+
+    // Add the new item
+    data.push({
+      name: item.name,
+      quantity: parseInt(item.quantity) || 1,
+      brand: item.brand.replaceAll('"', '') || "",
+      color: item.color.replaceAll('"', '') || ""
+    });
+
+    // Save back to Firebase
+    await set(stationRef, { items: data, updatedAt: Date.now() });
+
+    setTimeout(() => window.location.reload(), 1000);
+  } catch (err) {
+    console.error("Erro ao enviar item para a Base de Dados:", err);
+  }
 }
 
 function display_DB_INFO() {

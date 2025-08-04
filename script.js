@@ -66,8 +66,9 @@ async function loadStations() {
   const groupMap = {
     "AD": "ADMIN OFFICE",
     "DL": "ADMIN OFFICE",
-    "CC": "TEST OFFICE"
-    // Add more as needed
+    "CR": "ADMIN OFFICE",
+    "CC": "CALL CENTER",
+    "WR": "WAREHOUSE"
   };
 
   // Group stations by codename

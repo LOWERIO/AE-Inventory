@@ -159,7 +159,7 @@ async function sendItemToSheets(item, stationID) {
   formData.append('stationID', stationID);
 
   // This will send the request, but you can't check the result!
-  await fetch('https://script.google.com/macros/s/AKfycbyH1p1_CNb8D3N35hDh2SLVTKrOeiD0zdS2b6oXD7Q6hmzm3gERGVQt2lHqIZfW1Btl/exec', {
+  await fetch('https://script.google.com/macros/s/AKfycbxMkSqcaP8DaOeiOBGF9LO8E0lQD1t1iYuUYvHKkm9DdMI1qdSBf7ojSdcJmov8Hz_y7A/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: formData

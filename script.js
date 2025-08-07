@@ -241,6 +241,7 @@ loginForm.addEventListener("submit", async (e) => {
     await signInWithEmailAndPassword(auth, email, password);
     loginForm.style.display = "none";
     adminUI.style.display = "block";
+    document.getElementById("Station_Options").style.display = "flex";
     tt.style.display = "none";
 
     await loadStations();

@@ -14,14 +14,19 @@
     <input type="password" id="password" placeholder="Password" required />
     <button type="submit">Entrar</button>
   </form>
-
+  <div id="Station_Options">
+      <select id="station-select"></select>
+      <button id="verificar_st" >Verificar</button>
+      <button id="change-group-btn">Grupo</button>
+      <button id="remove-station-btn" style="background-color: #e04848;">Excluir!</button>
+    </div>
   <div id="admin-ui" style="display: none;">
     <div>
       <input type="text" id="new-station-name" placeholder="Novo Nome da Estação" />
       <button id="add-station-btn">+ Adicionar Estação</button>
     </div>
 
-    <div id="Current_Station"><select id="station-select"></select><button id="remove-station-btn" style="background-color: #e04848; margin-top: 1em;">Excluir!</button><button id="verificar_st" >Verificar Estação</button><button id="change-group-btn" style="margin-left:12px;">Mudar Grupo</button></div>
+    
 
     <ul id="item-list"></ul>
 

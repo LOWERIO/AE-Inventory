@@ -21,7 +21,7 @@
       <button id="add-station-btn">+ Adicionar Estação</button>
     </div>
 
-    <div id="Current_Station"><select id="station-select"></select><button id="remove-station-btn" style="background-color: #e04848; margin-top: 1em;">Excluir!</button><button id="verificar_st" >Verificar Estação</button></div>
+    <div id="Current_Station"><select id="station-select"></select><button id="remove-station-btn" style="background-color: #e04848; margin-top: 1em;">Excluir!</button><button id="verificar_st" >Verificar Estação</button><button id="change-group-btn" style="margin-left:12px;">Mudar Grupo</button></div>
 
     <ul id="item-list"></ul>
 
@@ -39,6 +39,46 @@
       <button id="confirm-yes" class="btn-confirm">Sim</button>
       <button id="confirm-no" class="btn-cancel">Cancelar</button>
     </div>
+  </div>
+</div>
+
+<div id="group-modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); align-items:center; justify-content:center;">
+  <div style="background:#3d3d3d; padding:24px 32px; border-radius:8px; min-width:320px; max-width:90vw;">
+    <h3>Escolha o grupo da estação</h3>
+    <form id="group-form">
+      <div>
+        <label><input type="radio" name="group" value="ADMIN OFFICE" required> ADMIN OFFICE</label><br>
+        <label><input type="radio" name="group" value="WAREHOUSE">WAREHOUSE</label><br>
+        <label><input type="radio" name="group" value="DELIVERY PT" required> DELIVERY PT</label><br>
+        <label><input type="radio" name="group" value="DELIVERY ES"> DELIVERY ES</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER PT"> CALL CENTER PT</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER ES"> CALL CENTER ES</label>
+      </div>
+      <div style="margin-top:16px; text-align:right;">
+        <button type="button" id="cancel-group-btn" style="margin-right:8px;">Cancelar</button>
+        <button type="submit">Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="change-group-modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); align-items:center; justify-content:center;">
+  <div style="background:#3d3d3d; padding:24px 32px; border-radius:8px; min-width:320px; max-width:90vw;">
+    <h3>Escolha o novo grupo</h3>
+    <form id="change-group-form">
+      <div>
+        <label><input type="radio" name="group" value="ADMIN OFFICE" required>ADMIN OFFICE</label><br>
+        <label><input type="radio" name="group" value="WAREHOUSE">WAREHOUSE</label><br>
+        <label><input type="radio" name="group" value="DELIVERY PT">DELIVERY PT</label><br>
+        <label><input type="radio" name="group" value="DELIVERY ES">DELIVERY ES</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER PT">CALL CENTER PT</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER ES">CALL CENTER ES</label>
+      </div>
+      <div style="margin-top:16px; text-align:right;">
+        <button type="button" id="cancel-change-group-btn" style="margin-right:8px;">Cancelar</button>
+        <button type="submit">Confirmar</button>
+      </div>
+    </form>
   </div>
 </div>
 

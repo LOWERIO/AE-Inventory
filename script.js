@@ -67,17 +67,14 @@ async function loadStations() {
     "AD": "ADMIN OFFICE",
     "DL": "ADMIN OFFICE",
     "CR": "ADMIN OFFICE",
-    "CC": "CALL CENTER",
-    "WR": "WAREHOUSE"
+    "WR": "WAREHOUSE",
+    "CC": "CALL CENTER"
   };
 
-  // Group stations by codename
+  // Group stations by codename and special rules for CALL CENTER
   const groups = {};
   Object.keys(stationsData).forEach(stationId => {
-    // Extract codename (assumes codename is first 2 letters, adjust if needed)
-    const codename = stationId.substring(0, 2).toUpperCase();
-    const groupName = groupMap[codename] || "OUTROS";
-
+    let groupName = stationsData[stationId]?.Group;
     if (!groups[groupName]) groups[groupName] = [];
     groups[groupName].push(stationId);
   });
@@ -340,36 +337,53 @@ addStationBtn.addEventListener("click", async () => {
     return;
   }
 
-  try {
-    const stationRef = ref(db, `stations/${newStationName}`);
-    const snap = await get(stationRef);
+  // Show modal
+  const modal = document.getElementById("group-modal");
+  const form = document.getElementById("group-form");
+  const cancelBtn = document.getElementById("cancel-group-btn");
 
-    if (snap.exists()) {
-      showNotification("A estação já existe.", "error");
-      return;
+  modal.style.display = "flex";
+
+  // Handle cancel
+  cancelBtn.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // Handle submit
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const group = form.group.value;
+    modal.style.display = "none";
+
+
+    try {
+      const stationRef = ref(db, `stations/${newStationName}`);
+      const snap = await get(stationRef);
+
+      if (snap.exists()) {
+        showNotification("A estação já existe.", "error");
+        return;
+      }
+
+      await set(stationRef, {
+        createdAt: Date.now(),
+        Group: group
+      });
+      showNotification(`Estação "${newStationName}" adicionada!`, "success");
+
+      await loadStations();
+
+      stationSelect.value = newStationName;
+      await loadStationItems(newStationName);
+
+      newStationInput.value = "";
+      updateButtonsState();
+
+    } catch (err) {
+      showNotification("Falha ao adicionar estação: " + err.message, "error");
+      console.error(err);
     }
-
-    await set(stationRef, { iSelecionas: [], createdAt: Date.now() });
-    showNotification(`Estação "${newStationName}" adicionada!`, "success");
-
-    await loadStations();
-    
-    // // Add new station to dropdown and select it
-    // const opt = document.createElement("option");
-    // opt.value = newStationName;
-    // opt.textContent = newStationName;
-    
-
-    stationSelect.value = newStationName;
-    await loadStationItems(newStationName);
-
-    newStationInput.value = "";
-    updateButtonsState();
-
-  } catch (err) {
-    showNotification("Falha ao adicionar estação: " + err.message, "error");
-    console.error(err);
-  }
+  };
 });
 
 window.addEventListener("beforeunload", (e) => {
@@ -446,4 +460,58 @@ async function removeItemFromSheets(stationID, itemName) {
     body: formData
   });
 }
+
+const changeGroupBtn = document.getElementById("change-group-btn");
+const changeGroupModal = document.getElementById("change-group-modal");
+const changeGroupForm = document.getElementById("change-group-form");
+const cancelChangeGroupBtn = document.getElementById("cancel-change-group-btn");
+
+changeGroupBtn.addEventListener("click", async () => {
+  const stationId = stationSelect.value;
+  if (!stationId) {
+    showNotification("Selecione uma estação para mudar o grupo.", "error");
+    return;
+  }
+
+  // Pre-select current group if possible
+  const stationRef = ref(db, `stations/${stationId}`);
+  const snap = await get(stationRef);
+  const currentGroup = snap.exists() ? snap.val().Group : "";
+  if (currentGroup) {
+    [...changeGroupForm.group].forEach(radio => {
+      radio.checked = (radio.value === currentGroup);
+    });
+  }
+
+  changeGroupModal.style.display = "flex";
+});
+
+cancelChangeGroupBtn.onclick = () => {
+  changeGroupModal.style.display = "none";
+};
+
+changeGroupForm.onsubmit = async (e) => {
+  e.preventDefault();
+  const stationId = stationSelect.value;
+  const newGroup = changeGroupForm.group.value;
+  changeGroupModal.style.display = "none";
+
+  try {
+    const stationRef = ref(db, `stations/${stationId}`);
+    const snap = await get(stationRef);
+    if (!snap.exists()) {
+      showNotification("Estação não encontrada.", "error");
+      return;
+    }
+    const data = snap.val();
+    data.Group = newGroup;
+    await set(stationRef, data);
+
+    showNotification("Grupo alterado com sucesso!", "success");
+    await loadStations();
+    stationSelect.value = stationId;
+  } catch (err) {
+    showNotification("Erro ao mudar grupo: " + err.message, "error");
+  }
+};
 

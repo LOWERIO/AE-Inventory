@@ -311,3 +311,9 @@ li input {
 .qty{
   text-align: center;
 }
+
+
+input[type="radio"] {
+  position: absolute;
+  left: 130px;
+}

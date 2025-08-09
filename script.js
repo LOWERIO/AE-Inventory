@@ -30,7 +30,6 @@ document.getElementById("verificar_st").addEventListener("click", () => {
 });
 
 function open_check(){
-  sessionStorage.setItem("station", stationSelect.value);
   window.open(`./check.html?id=${stationSelect.value}`, "_self");
 }
 

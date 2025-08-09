@@ -252,6 +252,7 @@ adminbtn.innerHTML = `
 
 const adminLoginBtn = document.getElementById("admin-login-btn");
 adminLoginBtn.onclick = () => {
+  sessionStorage.setItem("station", stationID);
   window.location.href = "./index.html";
 };
 

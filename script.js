@@ -30,7 +30,8 @@ document.getElementById("verificar_st").addEventListener("click", () => {
 });
 
 function open_check(){
-  window.open(`./check.html?id=${stationSelect.value}`, "_self")
+  sessionStorage.setItem("station", stationSelect.value);
+  window.open(`./check.html?id=${stationSelect.value}`, "_self");
 }
 
 
@@ -425,7 +426,9 @@ if (!sessionStorage.getItem("user")) {
   
   await loadStations();
   if (stationSelect.options.length > 0) {
-    stationSelect.value = stationSelect.options[0].value;
+    
+    stationSelect.value = sessionStorage.getItem("station") || stationSelect.options[0].value;
+    
     await loadStationItems(stationSelect.value);
   }
   await updateButtonsState();

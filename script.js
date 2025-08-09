@@ -137,12 +137,16 @@ async function saveChanges() {
       
       dataToSave.createdAt = Date.now();
       dataToSave.items = [];
+      dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
     } else {
      
       dataToSave.items = items;
     }
+    //make it also save the group of the station
+    
 
-    await set(ref(db, `stations/${stationId}`), dataToSave);
+
+    await set(ref(db, `stations/${stationId}`), dataToSave,);
   } catch (err) {
     showNotification("Falha ao guardar : " + err.message, "error");
     console.error(err);
@@ -452,6 +456,7 @@ async function removeItemFromSheets(stationID, itemName) {
   formData.append('action', 'deleteItem');
   formData.append('stationID', stationID);
   formData.append('itemName', itemName);
+
 
   // Replace with your actual Apps Script Web App URL:
   await fetch(appscripturl, {

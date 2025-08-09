@@ -374,3 +374,12 @@ input[type="radio"] {
   font-weight: bolder;
   font-size: 15pt;
 }
+
+
+select label{
+  cursor: pointer;
+}
+
+input[type="radio"]{
+  cursor: pointer;
+}

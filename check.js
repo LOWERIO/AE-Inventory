@@ -83,7 +83,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   if (firebaseItems.length === 0 && sheetItems.length === 0) {
     display.innerHTML += `<p>Nenhum item encontrado.</p>`;
-    missingList.innerHTML = `<p>Nenhum item em falta ✔.</p>`;
+    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
     return;
   }
 
@@ -208,11 +208,11 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   missingList.innerHTML = "";
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
-    missingList.innerHTML = `<p>Nenhum item em falta ✔.</p>`;
-    document.getElementById("tittle-all").innerText += "✔️";
+    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
+    document.getElementById("st-tittle").innerText += " ✔️";
   } else {
     if (missingInSheets.length > 0) {
-      document.getElementById("tittle-all").innerText += "❌";
+      document.getElementById("st-tittle").innerText += " ❌";
 
       missingList.innerHTML += `<div style="font-weight:bold; margin-top:8px;">(${missingInSheets.length}) Em falta no Sheets:</div>`;
       missingInSheets.forEach(item => {
@@ -290,7 +290,8 @@ async function sendItemToDB(item, stationID) {
 function display_DB_INFO() {
   const display = document.getElementById("display_DB_sts");
   const info = document.createElement("h1");
-  info.textContent =stationID;
+  info.id = "st-tittle";
+  info.textContent = stationID;
   display.append(info);
 }
 

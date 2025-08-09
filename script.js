@@ -112,9 +112,10 @@ function scheduleAutoSave() {
     saveChanges();
   }, SAVE_DEBOUNCE_MS);
 }
-
+const dataToSave = {};
 // Save current item list to Firebase for selected station
 async function saveChanges() {
+  
   if (!hasUnsavedChanges) return;
 
   const stationId = stationSelect.value;
@@ -122,6 +123,9 @@ async function saveChanges() {
     showNotification("Seleciona uma estação primeiro.", "error");
     return;
   }
+
+  const stationSnap = await get(ref(db, `stations/${stationId}`));
+  
 
   const items = [...itemList.children].map((li, i) => ({
     name: li.querySelector(`#name-${i}`).value.trim(),
@@ -131,7 +135,7 @@ async function saveChanges() {
   }));
 
   try {
-    const dataToSave = {};
+    
 
     if (items.length === 0) {
       
@@ -142,8 +146,9 @@ async function saveChanges() {
       dataToSave.items = items;
     }
 
-    dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
-
+   if (stationSnap.exists()) {
+     dataToSave.Group = stationSnap.val().Group || "Estação em Falta";
+   }
 
     await set(ref(db, `stations/${stationId}`), dataToSave);
   } catch (err) {

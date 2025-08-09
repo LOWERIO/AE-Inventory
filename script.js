@@ -423,6 +423,8 @@ if (!sessionStorage.getItem("user")) {
 } else {
   loginForm.style.display = "none";
   adminUI.style.display = "block";
+  document.getElementById("Station_Options").style.display = "flex";
+  tt.style.display = "none";
   
   await loadStations();
   if (stationSelect.options.length > 0) {

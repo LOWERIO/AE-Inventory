@@ -195,6 +195,8 @@ li input {
 
 
 
+
+
 #notification-container {
   position: fixed;
   top: 1rem;
@@ -354,11 +356,29 @@ li input {
   text-align: center;
 }
 
+#change-group-form div{
+  text-align: center;
+}
 
-input[type="radio"] {
+#change-group-form div label{
+  cursor: pointer;
+}
+
+#change-group-form div label:hover{
+  color: yellow;
+  font-weight: bolder;
+  transition: all 0.3s ease;
+}
+
+input[type="radio"]{
+  display: none;
   position: absolute;
   left: 130px;
   transition: all 0.3s ease;
+}
+
+input[type="radio"]:hover {
+  scale: 1.5;
 }
 
 #Station_Options{

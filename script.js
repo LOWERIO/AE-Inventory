@@ -504,6 +504,31 @@ const changeGroupModal = document.getElementById("change-group-modal");
 const changeGroupForm = document.getElementById("change-group-form");
 const cancelChangeGroupBtn = document.getElementById("cancel-change-group-btn");
 
+
+//I want a function that detects when the radio inputs named "group" are clicked then the label parent to them turns yellow and all the others not clicked turn white
+const groupRadios = changeGroupForm.querySelectorAll("input[name='group']");
+
+groupRadios.forEach(radio => {
+  radio.addEventListener("change", updateGroupLabelColors);
+});
+
+function updateGroupLabelColors() {
+  const checkedRadio = [...groupRadios].find(radio => radio.checked);
+  [...changeGroupForm.querySelectorAll("label")].forEach(label => {
+    if (!label.contains(checkedRadio)) {
+      label.style.color = "";
+      label.style.fontWeight = "normal";
+    }
+  });
+  if (checkedRadio) {
+    const label = [...changeGroupForm.querySelectorAll("label")].find(label => label.contains(checkedRadio));
+    if (label) {
+      label.style.color = "yellow";
+      label.style.fontWeight = "bolder";
+    }
+  }
+}
+
 changeGroupBtn.addEventListener("click", async () => {
   const stationId = stationSelect.value;
   if (!stationId) {
@@ -521,6 +546,19 @@ changeGroupBtn.addEventListener("click", async () => {
     });
   }
 
+  
+  const checkedRadio = [...changeGroupForm.group].find(radio => radio.checked);
+  [...changeGroupForm.querySelectorAll("label")].forEach(label => {
+    if (!label.contains(checkedRadio)) {
+      label.style.color = "";
+    }
+  });
+  if (checkedRadio) {
+    const label = [...changeGroupForm.querySelectorAll("label")].find(label => label.contains(checkedRadio));
+    if (label) {
+      label.style.color = "yellow";
+    }
+  }
   changeGroupModal.style.display = "flex";
 });
 

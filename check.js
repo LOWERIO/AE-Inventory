@@ -15,6 +15,7 @@ const notificationContainer = document.getElementById("notification-container");
 
 
 
+
 async function loadStationItems(stationID) {
   if (!stationID) return [];
 
@@ -103,15 +104,29 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   );
 
   // Main table header
-  display.innerHTML = `
-    <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
-      <div>Nome</div>
-      <div style='text-align: center;'>Quantidade</div>
-      <div>Marca</div>
+
+  if (auth.currentUser) {
+    display.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
+        <div>Nome</div>
+        <div style='text-align: center;'>Quantidade</div>
+        <div>Marca</div>
       <div>Cor</div>
       <div>Ações</div>
     </div>
   `;
+  } else {
+    display.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
+        <div>Nome</div>
+        <div style='text-align: center;'>Quantidade</div>
+        <div>Marca</div>
+        <div>Cor</div>
+      </div>
+  `;
+  }
+
+
 
   // Show all DB items, with "Sheets" button if missing/invalid in Sheets
   firebaseItems.forEach((item, idx) => {
@@ -155,7 +170,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
         <div class="${brandValid ? 'valid' : 'invalid'}">${displayBrand}</div>
         <div class="${colorValid ? 'valid' : 'invalid'}">${displayColor}</div>
         <div>
-          ${isInvalid ? `<button id="${btnId}">Sheets</button>` : ''}
+          ${isInvalid && auth.currentUser ? `<button id="${btnId}">Sheets</button>` : ''}
         </div>
       </div>
     `;
@@ -181,7 +196,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
         <div class="invalid">${item.brand}</div>
         <div class="invalid">${item.color}</div>
         <div>
-          <button id="${btnId}">DB</button>
+          ${auth.currentUser ? `<button id="${btnId}">DB</button>` : ''}
         </div>
       </div>
     `;
@@ -202,7 +217,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   });
 
 
-  // Fill "Itens em Falta" section using only divs and grid layout
+
   missingList.innerHTML = "";
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {

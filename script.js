@@ -30,7 +30,7 @@ document.getElementById("verificar_st").addEventListener("click", () => {
 });
 
 function open_check(){
-  window.open(`./check.html?id=${stationSelect.value}`)
+  window.open(`./check.html?id=${stationSelect.value}`, "_self")
 }
 
 
@@ -414,7 +414,7 @@ stationSelect.addEventListener("change", () => {
 
 
 if (!sessionStorage.getItem("user")) {
-  
+
   loginForm.style.display = "block";
   adminUI.style.display = "none";
   document.getElementById("Station_Options").style.display = "none";

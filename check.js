@@ -207,6 +207,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   missingList.innerHTML = "";
 
+
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
     missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
     document.getElementById("st-tittle").innerText += " ✔️";
@@ -243,7 +244,16 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   }
 }
 
+const adminbtn = document.getElementById("admin-btn");
 
+adminbtn.innerHTML = `
+  <button id="admin-login-btn">Admin</button>
+`;
+
+const adminLoginBtn = document.getElementById("admin-login-btn");
+adminLoginBtn.onclick = () => {
+  window.location.href = "./index.html";
+};
 
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();

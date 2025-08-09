@@ -22,7 +22,7 @@ const appscripturl = "https://script.google.com/macros/s/AKfycbx7ayVxhf0KpI6Gm41
 
 let hasUnsavedChanges = false;
 let saveTimeout = null;
-const SAVE_DEBOUNCE_MS = 1000; 
+const SAVE_DEBOUNCE_MS = 1000;
 
 
 document.getElementById("verificar_st").addEventListener("click", () => {
@@ -413,16 +413,42 @@ stationSelect.addEventListener("change", () => {
 });
 
 
+if (!sessionStorage.getItem("user")) {
+  
+  loginForm.style.display = "block";
+  adminUI.style.display = "none";
+  document.getElementById("Station_Options").style.display = "none";
+  tt.style.display = "block";
+} else {
+  loginForm.style.display = "none";
+  adminUI.style.display = "block";
+  
+  await loadStations();
+  if (stationSelect.options.length > 0) {
+    stationSelect.value = stationSelect.options[0].value;
+    await loadStationItems(stationSelect.value);
+  }
+  await updateButtonsState();
+}
+
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+  await trylogin(email,password);
+});
 
+
+async function trylogin(email,password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    sessionStorage.setItem("user", email);
+    sessionStorage.setItem("pass", password);
     loginForm.style.display = "none";
     adminUI.style.display = "block";
 
+    sessionStorage.setItem("email", email);
+    sessionStorage.setItem("pass", password);
     await loadStations();
 
     if (stationSelect.options.length > 0) {
@@ -433,8 +459,7 @@ loginForm.addEventListener("submit", async (e) => {
   } catch (err) {
     showNotification("Falha ao iniciar sessão: " + err.message, "error");
   }
-});
-
+}
 
 
 
@@ -523,4 +548,5 @@ changeGroupForm.onsubmit = async (e) => {
     showNotification("Erro ao mudar grupo: " + err.message, "error");
   }
 };
+
 

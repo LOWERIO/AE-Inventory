@@ -246,7 +246,10 @@ async function sendItemToDB(item, stationID) {
     const stationRef = ref(db, `stations/${stationID}`);
     const snap = await get(stationRef);
     const data = snap.exists() ? snap.val().items || [] : [];
+    
+    const STgroup = snap.val().Group.exists() ? snap.val().Group : "Grupo Em Falta";
 
+   
     // Add the new item
     data.push({
       name: item.name,
@@ -256,7 +259,7 @@ async function sendItemToDB(item, stationID) {
     });
 
     // Save back to Firebase
-    await set(stationRef, { items: data, updatedAt: Date.now(), Group: item.group || "" });
+    await set(stationRef, { items: data, Group: STgroup, updatedAt: Date.now() });
 
     setTimeout(() => window.location.reload(), 1000);
   } catch (err) {

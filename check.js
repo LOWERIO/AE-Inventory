@@ -105,26 +105,15 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   // Main table header
 
-  if (auth.currentUser) {
-    display.innerHTML = `
+
+  display.innerHTML = `
       <div style="display: grid; grid-template-columns: repeat(5, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
         <div>Nome</div>
         <div style='text-align: center;'>Quantidade</div>
         <div>Marca</div>
       <div>Cor</div>
       <div>Ações</div>
-    </div>
-  `;
-  } else {
-    display.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); font-weight: bold; gap: 8px; margin-bottom: 8px;">
-        <div>Nome</div>
-        <div style='text-align: center;'>Quantidade</div>
-        <div>Marca</div>
-        <div>Cor</div>
-      </div>
-  `;
-  }
+    </div>`;
 
 
 

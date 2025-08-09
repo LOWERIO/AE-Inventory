@@ -9,6 +9,7 @@ const query = window.location.search;
 const url = new URLSearchParams(query);
 const stationID = url.get('id');
 
+const appscripturl = "https://script.google.com/macros/s/AKfycbx7ayVxhf0KpI6Gm41WSG1SWeoAmt8ES3V7TFCHxdKVhAsvtIISxFkDu0FNQIwBOLnKmg/exec";
 
 const notificationContainer = document.getElementById("notification-container");
 
@@ -170,6 +171,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   });
 
   // Show all items missing in DB, with "DB" button
+  
   missingInDB.forEach((item, idx) => {
     const btnId = `send-to-db-${idx}`;
     display.innerHTML += `
@@ -183,13 +185,22 @@ function displayCombinedItems(firebaseItems, sheetItems) {
         </div>
       </div>
     `;
+
+    
+
+    
+
     setTimeout(() => {
       const btn = document.getElementById(btnId);
       if (btn) {
         btn.onclick = () => sendItemToDB(item, stationID);
       }
     }, 0);
+
+    
+
   });
+
 
   // Fill "Itens em Falta" section using only divs and grid layout
   missingList.innerHTML = "";
@@ -231,11 +242,11 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
 async function sendItemToSheets(item, stationID) {
   const formData = new FormData();
-  formData.append('shname', 'ADMIN OFFICE');
+  formData.append('shname', 'INVENTORY');
   formData.append('item', JSON.stringify(item));
   formData.append('stationID', stationID);
 
-  await fetch('https://script.google.com/macros/s/AKfycbyVobnVtPdmVdR-X_UY_GtsGrsBhu3GKqO55IFmOahZ-x6NZ8J4zMvMZLjAVOkBRpcSyw/exec', {
+  await fetch(appscripturl, {
     method: 'POST',
     mode: 'no-cors',
     body: formData
@@ -289,3 +300,4 @@ async function loadAndCompareItems(stationID) {
 }
 
 loadAndCompareItems(stationID);
+

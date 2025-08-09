@@ -18,6 +18,8 @@ const addStationBtn = document.getElementById("add-station-btn");
 const newStationInput = document.getElementById("new-station-name");
 const notificationContainer = document.getElementById("notification-container");
 
+const appscripturl = "https://script.google.com/macros/s/AKfycbx7ayVxhf0KpI6Gm41WSG1SWeoAmt8ES3V7TFCHxdKVhAsvtIISxFkDu0FNQIwBOLnKmg/exec"
+
 let hasUnsavedChanges = false;
 let saveTimeout = null;
 const SAVE_DEBOUNCE_MS = 1000; 
@@ -64,11 +66,6 @@ async function loadStations() {
 
   // Define your codename to group mapping here
   const groupMap = {
-    "AD": "ADMIN OFFICE",
-    "DL": "ADMIN OFFICE",
-    "CR": "ADMIN OFFICE",
-    "WR": "WAREHOUSE",
-    "CC": "CALL CENTER"
   };
 
   // Group stations by codename and special rules for CALL CENTER
@@ -437,11 +434,12 @@ loginForm.addEventListener("submit", async (e) => {
 updateButtonsState();
 async function removeStationFromSheets(stationID) {
   const formData = new FormData();
+  formData.append('shname', 'INVENTORY');
   formData.append('action', 'deleteStation');
   formData.append('stationID', stationID);
 
   // Replace with your actual Apps Script Web App URL:
-  await fetch('https://script.google.com/macros/s/AKfycbyVobnVtPdmVdR-X_UY_GtsGrsBhu3GKqO55IFmOahZ-x6NZ8J4zMvMZLjAVOkBRpcSyw/exec', {
+  await fetch(appscripturl, {
     method: 'POST',
     mode: 'no-cors',
     body: formData
@@ -450,12 +448,13 @@ async function removeStationFromSheets(stationID) {
 
 async function removeItemFromSheets(stationID, itemName) {
   const formData = new FormData();
+  formData.append('shname', 'INVENTORY');
   formData.append('action', 'deleteItem');
   formData.append('stationID', stationID);
   formData.append('itemName', itemName);
 
   // Replace with your actual Apps Script Web App URL:
-  await fetch('https://script.google.com/macros/s/AKfycbyVobnVtPdmVdR-X_UY_GtsGrsBhu3GKqO55IFmOahZ-x6NZ8J4zMvMZLjAVOkBRpcSyw/exec', {
+  await fetch(appscripturl, {
     method: 'POST',
     mode: 'no-cors',
     body: formData

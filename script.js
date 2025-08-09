@@ -137,12 +137,12 @@ async function saveChanges() {
       
       dataToSave.createdAt = Date.now();
       dataToSave.items = [];
-      dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
     } else {
      
       dataToSave.items = items;
-      dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
     }
+
+    dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
 
 
     await set(ref(db, `stations/${stationId}`), dataToSave);

@@ -205,8 +205,6 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   });
 
-
-
   missingList.innerHTML = "";
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {

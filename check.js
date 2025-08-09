@@ -209,6 +209,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
     missingList.innerHTML = `<p>Nenhum item em falta ✔.</p>`;
+    document.getElementById("tittle-all").innerHTML += "✔️";
   } else {
     if (missingInSheets.length > 0) {
       //in here make it also show total of missing items

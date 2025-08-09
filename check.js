@@ -83,7 +83,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   if (firebaseItems.length === 0 && sheetItems.length === 0) {
     display.innerHTML += `<p>Nenhum item encontrado.</p>`;
-    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
+    missingList.innerHTML = `<p>Nenhum item em falta.✔</p>`;
     return;
   }
 

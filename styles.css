@@ -178,6 +178,9 @@ li input {
   #login-form {
     top: calc(100vh / 2 - 150px) !important;
   }
+  #display_DB_itms{
+    width: 100% !important;
+  }
 }
 
 
@@ -315,7 +318,7 @@ li input {
 }
 
 #display_DB_itms{
-  width: max-content !important;
+  width: max-content;
 }
 
   
@@ -364,4 +367,10 @@ input[type="radio"] {
   position: absolute;
   font-weight: bolder;
   font-size: 50pt;
+}
+
+#missing_items {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 15pt;
 }

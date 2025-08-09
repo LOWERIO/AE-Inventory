@@ -175,6 +175,9 @@ li input {
     width: 100% !important;
     margin-left: 0 !important;
   }
+  #login-form {
+    top: calc(100vh / 2 - 150px) !important;
+  }
 }
 
 

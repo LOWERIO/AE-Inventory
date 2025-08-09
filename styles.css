@@ -359,12 +359,25 @@ li input {
 #change-group-form div{
   text-align: center;
 }
+#group-form div{
+  text-align: center;
+}
 
 #change-group-form div label{
   cursor: pointer;
 }
 
+#group-form div label{
+  cursor: pointer;
+}
+
 #change-group-form div label:hover{
+  color: yellow;
+  font-weight: bolder;
+  transition: all 0.3s ease;
+}
+
+#group-form div label:hover{
   color: yellow;
   font-weight: bolder;
   transition: all 0.3s ease;

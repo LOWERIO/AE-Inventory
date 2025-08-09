@@ -50,13 +50,13 @@
     <h3>Escolha o grupo da estação</h3>
     <form id="group-form">
       <div>
-        <label><input type="radio" name="group" value="ADMIN OFFICE" required>ADMIN OFFICE</label><br>
-        <label><input type="radio" name="group" value="WAREHOUSE">WAREHOUSE</label><br>
-        <label><input type="radio" name="group" value="CUSTOMER CARE">CUSTOMER CARE</label><br>
-        <label><input type="radio" name="group" value="DELIVERY PT">DELIVERY PT</label><br>
-        <label><input type="radio" name="group" value="DELIVERY ES">DELIVERY ES</label><br>
-        <label><input type="radio" name="group" value="CALL CENTER PT">CALL CENTER PT</label><br>
-        <label><input type="radio" name="group" value="CALL CENTER ES">CALL CENTER ES</label>
+        <label><input type="radio" name="group" value="ADMIN OFFICE" onclick="updateGroupLabelColors(this)" required>ADMIN OFFICE</label><br>
+        <label><input type="radio" name="group" value="WAREHOUSE" onclick="updateGroupLabelColors(this)">WAREHOUSE</label><br>
+        <label><input type="radio" name="group" value="CUSTOMER CARE" onclick="updateGroupLabelColors(this)">CUSTOMER CARE</label><br>
+        <label><input type="radio" name="group" value="DELIVERY PT" onclick="updateGroupLabelColors(this)">DELIVERY PT</label><br>
+        <label><input type="radio" name="group" value="DELIVERY ES" onclick="updateGroupLabelColors(this)">DELIVERY ES</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER PT" onclick="updateGroupLabelColors(this)">CALL CENTER PT</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER ES" onclick="updateGroupLabelColors(this)">CALL CENTER ES</label>
       </div>
       <div style="margin-top:16px; text-align:right;">
         <button type="button" id="cancel-group-btn" style="margin-right:8px;background-color: #e04848 !important;">Cancelar</button>
@@ -71,13 +71,13 @@
     <h3>Escolha o novo grupo</h3>
     <form id="change-group-form">
       <div>
-        <label><input type="radio" name="group" value="ADMIN OFFICE" required>ADMIN OFFICE</label><br>
-        <label><input type="radio" name="group" value="WAREHOUSE">WAREHOUSE</label><br>
-        <label><input type="radio" name="group" value="CUSTOMER CARE">CUSTOMER CARE</label><br>
-        <label><input type="radio" name="group" value="DELIVERY PT">DELIVERY PT</label><br>
-        <label><input type="radio" name="group" value="DELIVERY ES">DELIVERY ES</label><br>
-        <label><input type="radio" name="group" value="CALL CENTER PT">CALL CENTER PT</label><br>
-        <label><input type="radio" name="group" value="CALL CENTER ES">CALL CENTER ES</label>
+        <label><input type="radio" name="group" value="ADMIN OFFICE" onclick="updateGroupLabelColors(this)" required>ADMIN OFFICE</label><br>
+        <label><input type="radio" name="group" value="WAREHOUSE" onclick="updateGroupLabelColors(this)">WAREHOUSE</label><br>
+        <label><input type="radio" name="group" value="CUSTOMER CARE" onclick="updateGroupLabelColors(this)">CUSTOMER CARE</label><br>
+        <label><input type="radio" name="group" value="DELIVERY PT" onclick="updateGroupLabelColors(this)">DELIVERY PT</label><br>
+        <label><input type="radio" name="group" value="DELIVERY ES" onclick="updateGroupLabelColors(this)">DELIVERY ES</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER PT" onclick="updateGroupLabelColors(this)">CALL CENTER PT</label><br>
+        <label><input type="radio" name="group" value="CALL CENTER ES" onclick="updateGroupLabelColors(this)">CALL CENTER ES</label>
       </div>
       <div style="margin-top:16px; text-align:right;">
         <button type="button" id="cancel-change-group-btn" style="margin-right:8px;background-color: #e04848 !important;">Cancelar</button>
@@ -86,7 +86,7 @@
     </form>
   </div>
 </div>
-
-</body>
 <script type="module" src="script.js"></script>
+</body>
+
 </html>

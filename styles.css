@@ -119,6 +119,7 @@ li input {
   flex-direction: column;
   gap: 0.6em;
   color: #ddd;
+  text-align: center;
   transition: all 0.3s ease;
 }
 
@@ -188,6 +189,7 @@ li input {
   }
   #display_DB_itms{
     width: 100% !important;
+    font-size: 10pt !important;
   }
 }
 

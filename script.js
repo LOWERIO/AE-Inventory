@@ -141,9 +141,8 @@ async function saveChanges() {
     } else {
      
       dataToSave.items = items;
+      dataToSave.Group = document.querySelector('input[name="group"]:checked')?.value || "Estação em Falta";
     }
-    //make it also save the group of the station
-    
 
 
     await set(ref(db, `stations/${stationId}`), dataToSave);

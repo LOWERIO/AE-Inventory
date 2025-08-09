@@ -246,8 +246,8 @@ async function sendItemToDB(item, stationID) {
     const stationRef = ref(db, `stations/${stationID}`);
     const snap = await get(stationRef);
     const data = snap.exists() ? snap.val().items || [] : [];
-    
-    const STgroup = snap.val().Group.exists() ? snap.val().Group : "Grupo Em Falta";
+
+    const STgroup = snap.val().Group != null ? snap.val().Group : "Grupo Em Falta";
 
    
     // Add the new item

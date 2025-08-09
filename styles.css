@@ -1,7 +1,7 @@
 /* Base and layout */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 590px;
+  max-width: 1000px;
   margin: auto;
   padding: 1.5rem 1rem;
   background: #121212;
@@ -67,6 +67,7 @@ ul {
   justify-content: center;
   align-items: center;
   gap: 70px;
+  width: 100%;
 }
 
 li {
@@ -340,7 +341,7 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-left: 160%;
+  margin-left: 115%;
   position: sticky;
   top: 10px;
   width: min-content;

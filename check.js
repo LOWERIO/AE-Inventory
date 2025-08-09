@@ -83,7 +83,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   if (firebaseItems.length === 0 && sheetItems.length === 0) {
     display.innerHTML += `<p>Nenhum item encontrado.</p>`;
-    missingList.innerHTML = `<p>Nenhum item em falta.✔</p>`;
+    missingList.innerHTML = `<p>Nenhum item em falta ✔.</p>`;
     return;
   }
 
@@ -210,7 +210,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   missingList.innerHTML = "";
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
-    missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
+    missingList.innerHTML = `<p>Nenhum item em falta ✔.</p>`;
   } else {
     if (missingInSheets.length > 0) {
       //in here make it also show total of missing items

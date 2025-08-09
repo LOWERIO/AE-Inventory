@@ -85,6 +85,8 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     return;
   }
 
+  
+
   // Find items missing in Sheets (present in DB but not in Sheets)
   const missingInSheets = firebaseItems.filter(dbItem =>
     !sheetItems.some(sheetItem =>
@@ -157,6 +159,8 @@ function displayCombinedItems(firebaseItems, sheetItems) {
       </div>
     `;
 
+    
+
     setTimeout(() => {
       const btn = document.getElementById(btnId);
       if (btn) {
@@ -194,7 +198,8 @@ function displayCombinedItems(firebaseItems, sheetItems) {
     missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
   } else {
     if (missingInSheets.length > 0) {
-      missingList.innerHTML += `<div style="font-weight:bold; margin-top:8px;">Em falta no Sheets:</div>`;
+      //in here make it also show total of missing items
+      missingList.innerHTML += `<div style="font-weight:bold; margin-top:8px;">(${missingInSheets.length}) Em falta no Sheets:</div>`;
       missingInSheets.forEach(item => {
         missingList.innerHTML += `
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #ffe5e5; color: #b30000; margin-bottom: 4px;">
@@ -207,7 +212,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
       });
     }
     if (missingInDB.length > 0) {
-      missingList.innerHTML += `<div style="font-weight:bold; margin-top:12px;">Em falta na Base de Dados:</div>`;
+      missingList.innerHTML += `<div style="font-weight:bold; margin-top:12px;">(${missingInDB.length}) Em falta na Base de Dados:</div>`;
       missingInDB.forEach(item => {
         missingList.innerHTML += `
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #ffe5e5; color: #b30000; margin-bottom: 4px;">

@@ -256,7 +256,7 @@ async function sendItemToDB(item, stationID) {
     });
 
     // Save back to Firebase
-    await set(stationRef, { items: data, updatedAt: Date.now() });
+    await set(stationRef, { items: data, updatedAt: Date.now(), Group: item.group || "" });
 
     setTimeout(() => window.location.reload(), 1000);
   } catch (err) {

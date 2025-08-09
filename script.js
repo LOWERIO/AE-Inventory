@@ -146,7 +146,7 @@ async function saveChanges() {
     
 
 
-    await set(ref(db, `stations/${stationId}`), dataToSave,);
+    await set(ref(db, `stations/${stationId}`), dataToSave);
   } catch (err) {
     showNotification("Falha ao guardar : " + err.message, "error");
     console.error(err);

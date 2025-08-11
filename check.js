@@ -243,18 +243,22 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   display_DB_INFO(false);
   
   const actionButtons = display.querySelectorAll("button");
+  
+  if (actionButtons.length === 0) {
+    return;
+  }
+  
   const pressButtons = async () => {
     for (const btn of actionButtons) {
       btn.click();
       await new Promise(resolve => setTimeout(resolve, 5000));
     }
   };
-  if (actionButtons.length > 0) {
-    const pressAllBtn = document.createElement("button");
-    pressAllBtn.innerText = "Enviar Todos";
-    pressAllBtn.onclick = pressButtons;
-    display.appendChild(pressAllBtn);
-  }
+  
+  const pressAllBtn = document.createElement("button");
+  pressAllBtn.innerText = "Enviar Todos";
+  pressAllBtn.onclick = pressButtons;
+  display.appendChild(pressAllBtn);
 }
 
 const adminbtn = document.getElementById("admin-btn");

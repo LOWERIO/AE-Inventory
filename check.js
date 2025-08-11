@@ -246,7 +246,7 @@ function displayCombinedItems(firebaseItems, sheetItems) {
   const pressButtons = async () => {
     for (const btn of actionButtons) {
       btn.click();
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
     }
   };
   if (actionButtons.length > 0) {

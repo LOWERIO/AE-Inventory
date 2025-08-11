@@ -516,7 +516,7 @@ function updateGroupLabelColors(input_from_dom_to_be_selected) {
   document.querySelectorAll("input[type='radio']").forEach(radio => {
     const label = radio.parentNode;
     if (!label.contains(input_from_dom_to_be_selected)) {
-      label.style.color = ""; // Reset all labels to default color
+      label.style.color = "";
       label.style.fontWeight = "normal";
     }
   });

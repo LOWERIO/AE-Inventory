@@ -13,7 +13,7 @@ const appscripturl = "https://script.google.com/macros/s/AKfycbx7ayVxhf0KpI6Gm41
 
 const notificationContainer = document.getElementById("notification-container");
 
-
+let valid = null;
 
 
 async function loadStationItems(stationID) {
@@ -210,12 +210,10 @@ function displayCombinedItems(firebaseItems, sheetItems) {
 
   if (missingInSheets.length === 0 && missingInDB.length === 0) {
     missingList.innerHTML = `<p>Nenhum item em falta.</p>`;
-    document.getElementById("st-tittle").innerText += " ✔️";
+    valid = true;
   } else {
-    document.getElementById("st-tittle").innerText += " ❌";
+    valid = false;
     if (missingInSheets.length > 0) {
-      
-
       missingList.innerHTML += `<div style="font-weight:bold; margin-top:8px;">(${missingInSheets.length}) Em falta no Sheets:</div>`;
       missingInSheets.forEach(item => {
         missingList.innerHTML += `
@@ -242,6 +240,21 @@ function displayCombinedItems(firebaseItems, sheetItems) {
       });
     }
   }
+  display_DB_INFO(false);
+  
+  const actionButtons = display.querySelectorAll("button");
+  const pressButtons = async () => {
+    for (const btn of actionButtons) {
+      btn.click();
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+  };
+  if (actionButtons.length > 0) {
+    const pressAllBtn = document.createElement("button");
+    pressAllBtn.innerText = "Enviar Todos";
+    pressAllBtn.onclick = pressButtons;
+    display.appendChild(pressAllBtn);
+  }
 }
 
 const adminbtn = document.getElementById("admin-btn");
@@ -257,6 +270,8 @@ adminLoginBtn.onclick = () => {
 };
 
 async function sendItemToSheets(item, stationID) {
+  valid = null;
+  display_DB_INFO();
   const formData = new FormData();
   formData.append('shname', 'INVENTORY');
   formData.append('item', JSON.stringify(item));
@@ -268,11 +283,15 @@ async function sendItemToSheets(item, stationID) {
     body: formData
   });
 
-  window.location.reload();
+
+  loadAndCompareItems(stationID);
+
 
 }
 
 async function sendItemToDB(item, stationID) {
+  valid = null;
+  display_DB_INFO();
   try {
     // Get current items from Firebase
     const stationRef = ref(db, `stations/${stationID}`);
@@ -293,18 +312,31 @@ async function sendItemToDB(item, stationID) {
     // Save back to Firebase
     await set(stationRef, { items: data, Group: STgroup, updatedAt: Date.now() });
 
-    setTimeout(() => window.location.reload(), 1000);
+    loadAndCompareItems(stationID);
   } catch (err) {
     console.error("Erro ao enviar item para a Base de Dados:", err);
   }
 }
 
 function display_DB_INFO() {
+  if (document.getElementById("st-tittle")) {
+    document.getElementById("st-tittle").remove();
+  }
   const display = document.getElementById("display_DB_sts");
   const info = document.createElement("h1");
   info.id = "st-tittle";
   info.textContent = stationID;
   display.append(info);
+
+  if(valid === true){
+    document.getElementById("st-tittle").innerText += " ✔️";
+  }
+  else if(valid === false){
+    document.getElementById("st-tittle").innerText += " ❌";
+  }
+  else{
+    document.getElementById("st-tittle").innerText += " ⚠️";
+  }
 }
 
 async function loadAndCompareItems(stationID) {
